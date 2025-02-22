@@ -123,7 +123,7 @@ export const CreateFeed = () => {
                 id="priority"
                 type="number"
                 value={priority}
-                onChange={(e) => setPriority(Number(e.target.value))}
+                onChange={(e) => setPriority(e.target.valueAsNumber)}
                 className="col-span-3"
                 required
               />
@@ -218,7 +218,6 @@ export const CreateFeed = () => {
             <Button
               className="cursor-pointer"
               variant="destructive"
-              type="reset"
               onClick={() => setShowModal(false)}
             >
               Cancel
