@@ -80,7 +80,7 @@ export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
       logo_url: logoUrl,
       max_items: 0, // Ensure this field is correct
       priority,
-      translation: translations.filter((t) => t.id !== 0), // Only send existing translations (removes deleted ones)
+      translation: translations,
     };
 
     try {
