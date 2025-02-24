@@ -4,7 +4,7 @@ import {
   IGetAllFeedItemsParams,
   IAllFeedItemsResponse,
   IGetItemsByFeedParams,
-} from "@/shared/model/feed-items";
+} from "../model/feed-items";
 
 export const feedItemsApi = createApi({
   reducerPath: "feedItemsApi",

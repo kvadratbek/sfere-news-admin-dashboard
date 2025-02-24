@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Dashboard, Categories, Feeds, Content } from "@/pages";
+import { Dashboard, Categories, Feeds, Content, FeedItems } from "@/pages";
 
 export const AppRouter = () => {
   const routerConfig = createBrowserRouter([
@@ -18,6 +18,10 @@ export const AppRouter = () => {
     {
       path: "/feeds/:feedId",
       element: <Content />,
+    },
+    {
+      path: "feed-items",
+      element: <FeedItems />,
     },
   ]);
   return <RouterProvider router={routerConfig} />;
