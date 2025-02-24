@@ -71,17 +71,17 @@ export const UpdateCategory = ({ updateCategoryId }: IUpdateCategory) => {
       id: updateCategoryId,
       icon_id: iconId,
       icon_url: iconUrl,
-      translations: translations.filter((t) => t.lang !== ""),
+      translations: translations,
     };
 
     try {
       await updateCategory({ id: updateCategoryId, category }).unwrap();
-      toast.success("Feed updated successfully!", {
-        description: `Feed (ID: ${updateCategoryId}) has been updated.`,
+      toast.success("Category updated successfully!", {
+        description: `Feed (ID: ${updateCategoryId}) has been updated`,
       });
       setShowModal(false);
     } catch (error: unknown) {
-      toast.error("Failed to update feed.", {
+      toast.error("Failed to update category", {
         description: error instanceof Error ? error.message : "Unknown error",
       });
     }
@@ -111,15 +111,27 @@ export const UpdateCategory = ({ updateCategoryId }: IUpdateCategory) => {
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="id" className="text-center">
+                  Category ID
+                </Label>
+                <Input
+                  id="id"
+                  value={updateCategoryId}
+                  className="col-span-3"
+                  disabled
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="iconId" className="text-center">
                   Icon ID
                 </Label>
                 <Input
                   id="iconId"
                   value={iconId}
-                  placeholder="someid123.png"
+                  placeholder={iconId ?? "No Data"}
                   onChange={(e) => setIconId(e.target.value)}
                   className="col-span-3"
+                  disabled
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGetAllFeedContentsQuery } from "@/shared/api/feed-content-api";
-import { UpdateCategory, DeleteCategory } from "@/features/categories";
+import { UpdateContent, DeleteContent } from "@/features/content";
 import { Content } from "@/entities";
 import {
   Table,
@@ -94,8 +94,8 @@ export const ContentsList = () => {
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
-              <TableHead>Category ID</TableHead>
               <TableHead>Feed ID</TableHead>
+              <TableHead>Category ID</TableHead>
               <TableHead>Language</TableHead>
               <TableHead>Link</TableHead>
               <TableHead className="text-right">Action</TableHead>
@@ -106,8 +106,8 @@ export const ContentsList = () => {
               <Content
                 key={content.id}
                 content={content}
-                updateFeature={<UpdateCategory updateCategoryId={content.id} />}
-                deleteFeature={<DeleteCategory deleteCategoryId={content.id} />}
+                updateFeature={<UpdateContent updateContentId={content.id} />}
+                deleteFeature={<DeleteContent deleteContentId={content.id} />}
               />
             ))}
           </TableBody>

@@ -88,7 +88,6 @@ export const CreateCategory = () => {
                 placeholder="https://example.com/logo.png"
                 onChange={(e) => setIconUrl(e.target.value)}
                 className="col-span-3"
-                required
               />
             </div>
           </div>

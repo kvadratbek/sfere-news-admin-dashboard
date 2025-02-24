@@ -25,7 +25,7 @@ export const feedContentApi = createApi({
   tagTypes: ["FeedContent"], // For cache invalidation
   endpoints: (builder) => ({
     // GET /v1/admin/feeds/content
-    getFeedContent: builder.query<IFeedContent, string>({
+    getFeedContent: builder.query<IFeedContent, number>({
       query: (id) => ({
         url: `/v1/admin/feeds/content`,
         params: { id },

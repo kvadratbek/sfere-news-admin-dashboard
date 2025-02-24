@@ -1,6 +1,6 @@
 import { SidebarInset, SidebarProvider } from "@/shared/ui/sidebar";
 import { AppSidebar, AppHeader, ContentsList } from "@/widgets";
-import { CreateFeed } from "@/features/feeds";
+import { CreateContent } from "@/features/content";
 
 export const Content = () => {
   return (
@@ -11,7 +11,7 @@ export const Content = () => {
           isInDashboardPage={false}
           breadcrumbItemName="Feeds"
           hasLangSelector={false}
-          actionButton={<CreateFeed />}
+          actionButton={<CreateContent />}
         />
         <ContentsList />
       </SidebarInset>
