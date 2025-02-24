@@ -1,8 +1,8 @@
 import { TableCell, TableRow } from "@/shared/ui/table";
-import { IFeedProps } from "../model";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { Button } from "@/shared/ui/button";
+import { IFeedProps } from "../model";
 
 export const Feed = ({
   feed,
