@@ -13,14 +13,21 @@ export const FeedItem = ({
       <TableCell>{feedItem.id ?? "No Data"}</TableCell>
       <TableCell>{feedItem.feed_id ?? "No Data"}</TableCell>
       <TableCell>{feedItem.category_id ?? "No Data"}</TableCell>
-      <TableCell>{feedItem.title ?? "No Data"}</TableCell>
+      <TableCell className="w-[10%]">
+        <a
+          href={feedItem.link}
+          target="_blank"
+          className="cursor-pointer text-center underline"
+        >
+          {feedItem.title ?? "No Data"}
+        </a>
+      </TableCell>
       <TableCell>{feedItem.description ?? "No Data"}</TableCell>
-      <TableCell>{feedItem.link ?? "No Data"}</TableCell>
       <TableCell>{feedItem.lang ?? "No Data"}</TableCell>
       <TableCell>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="ghost" className="cursor-pointer">
+            <Button variant="secondary" className="cursor-pointer">
               Thumbnail
             </Button>
           </DialogTrigger>
@@ -30,6 +37,7 @@ export const FeedItem = ({
               width={feedItem.thumbnails.width}
               height={feedItem.thumbnails.height}
               alt={feedItem.thumbnails.alt_text}
+              className="p-5"
             />
           </DialogContent>
         </Dialog>

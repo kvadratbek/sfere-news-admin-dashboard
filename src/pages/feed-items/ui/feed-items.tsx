@@ -1,5 +1,5 @@
 import { SidebarInset, SidebarProvider } from "@/shared/ui/sidebar";
-import { AppSidebar, AppHeader, CategoriesList } from "@/widgets";
+import { AppSidebar, AppHeader, ItemsList } from "@/widgets";
 import { CreateCategory } from "@/features/categories";
 
 export const FeedItems = () => {
@@ -13,7 +13,7 @@ export const FeedItems = () => {
           hasLangSelector={true}
           actionButton={<CreateCategory />}
         />
-        <CategoriesList />
+        <ItemsList />
       </SidebarInset>
     </SidebarProvider>
   );
