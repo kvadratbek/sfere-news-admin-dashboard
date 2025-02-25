@@ -1,6 +1,6 @@
-import { useState } from "react";
-// import { useSelector } from "react-redux";
-// import { RootState } from "@/app/store";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 import { useGetAllFeedItemsQuery } from "@/shared/api/feed-items";
 import { AppPagination } from "@/features";
 import { UpdateFeed, DeleteFeed } from "@/features/feeds";
@@ -17,18 +17,25 @@ import {
 import { Skeleton } from "@/shared/ui/skeleton";
 
 export const ItemsList = () => {
-  // const selectedLanguage = useSelector(
-  //   (state: RootState) => state.language.selectedLanguage
-  // );
+  const selectedLanguage = useSelector(
+    (state: RootState) => state.language.selectedLanguage
+  );
+  // const [itemsLimit, setItemsLimit] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 2;
   const { data, isLoading, error } = useGetAllFeedItemsQuery({
     limit: 10,
     page: currentPage,
-    // lang: selectedLanguage,
+    lang: selectedLanguage,
   });
+  const totalItems = data?.total_items ?? 0;
+  const totalPages = totalItems / 10;
   const items = data?.items;
-  console.log(items);
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      console.log(items);
+    }
+  });
 
   if (isLoading) {
     return (
@@ -82,18 +89,18 @@ export const ItemsList = () => {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
       <div className="rounded-xl bg-muted/50 p-4">
-        <Table className="">
+        <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Feed ID</TableHead>
-              <TableHead>Category ID</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Lang</TableHead>
-              <TableHead>Thumbnail</TableHead>
-              <TableHead>Edit</TableHead>
-              <TableHead>Delete</TableHead>
+              <TableHead className="text-center">ID</TableHead>
+              <TableHead className="text-center">Feed ID</TableHead>
+              <TableHead className="text-center">Category ID</TableHead>
+              <TableHead className="text-center">Title</TableHead>
+              <TableHead className="text-center">Description</TableHead>
+              <TableHead className="text-center">Lang</TableHead>
+              <TableHead className="text-center">Thumbnail</TableHead>
+              <TableHead className="text-center">Edit</TableHead>
+              <TableHead className="text-center">Delete</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
