@@ -45,7 +45,7 @@ export const AppHeader = ({
                 Dashboard
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {isInDashboardPage && !feedId && (
+            {!isInDashboardPage && !feedId && (
               <>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
@@ -53,7 +53,7 @@ export const AppHeader = ({
                 </BreadcrumbItem>
               </>
             )}
-            {feedId && (
+            {!isInDashboardPage && feedId && (
               <>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
