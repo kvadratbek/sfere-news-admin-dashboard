@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useCreateFeedItemMutation } from "@/shared/api/feed-items";
+import { useCreateFeedItemMutation } from "@/shared/api/feed-items-api";
 import { Button } from "@/shared/ui/button";
 import {
   Dialog,
@@ -20,8 +20,8 @@ export const CreateFeedItem = () => {
   const [feedId, setFeedId] = useState(0);
   const [lang, setLang] = useState("");
   const [link, setLink] = useState("");
-  const [thumbnailAltText, setThumbnailAltText] = useState("");
-  const [thumbnailDldUrl, setThumbnailDldUrl] = useState("");
+  // const [thumbnailAltText, setThumbnailAltText] = useState("");
+  // const [thumbnailDldUrl, setThumbnailDldUrl] = useState("");
   const [title, setTitle] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [createFeedItem, { isLoading }] = useCreateFeedItemMutation();
@@ -35,10 +35,10 @@ export const CreateFeedItem = () => {
       feed_id: feedId,
       lang: lang,
       link: link,
-      thumbnails: {
-        alt_text: thumbnailAltText,
-        dld_url: thumbnailDldUrl,
-      },
+      // thumbnails: {
+      //   alt_text: thumbnailAltText,
+      //   dld_url: thumbnailDldUrl,
+      // },
       title: title,
     };
 
@@ -66,8 +66,8 @@ export const CreateFeedItem = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] sm:max-h-[550px] overflow-scroll">
         <DialogHeader>
-          <DialogTitle>Add New Feed Item</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-center">Add New Feed Item</DialogTitle>
+          <DialogDescription className="text-center">
             Fill out the form to add a new feed item to the system
           </DialogDescription>
         </DialogHeader>
@@ -143,7 +143,7 @@ export const CreateFeedItem = () => {
               />
             </div>
             {/* Thumbnail Alt Text */}
-            <div className="grid grid-cols-4 items-center gap-4">
+            {/* <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="alt-text" className="text-center">
                 Thumbnail Alt Text
               </Label>
@@ -154,9 +154,9 @@ export const CreateFeedItem = () => {
                 onChange={(e) => setThumbnailAltText(e.target.value)}
                 className="col-span-3"
               />
-            </div>
+            </div> */}
             {/* Thumbnail Source */}
-            <div className="grid grid-cols-4 items-center gap-4">
+            {/* <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="img-src" className="text-center">
                 Thumbnail Source
               </Label>
@@ -167,7 +167,7 @@ export const CreateFeedItem = () => {
                 onChange={(e) => setThumbnailDldUrl(e.target.value)}
                 className="col-span-3"
               />
-            </div>
+            </div> */}
             {/* Title */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="title" className="text-center">
@@ -185,15 +185,15 @@ export const CreateFeedItem = () => {
 
           <DialogFooter className="mt-4">
             <Button
-              className="cursor-pointer"
+              className="cursor-pointer w-[40%]"
               variant="default"
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? "Adding..." : "Add Content"}
+              {isLoading ? "Adding..." : "Add Feed Item"}
             </Button>
             <Button
-              className="cursor-pointer"
+              className="cursor-pointer w-[40%]"
               variant="destructive"
               type="reset"
               onClick={() => setShowModal(false)}
