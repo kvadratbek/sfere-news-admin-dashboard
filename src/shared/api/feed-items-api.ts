@@ -94,4 +94,7 @@ export const {
   useCreateFeedItemMutation,
   useGetAllFeedItemsQuery,
   useGetAllItemsByFeedQuery,
+  useGetFeedItemByIdQuery,
+  useUpdateFeedItemMutation,
+  useDeleteFeedItemMutation,
 } = feedItemsApi;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { useGetAllFeedItemsQuery } from "@/shared/api/feed-items";
+import { useGetAllFeedItemsQuery } from "@/shared/api/feed-items-api";
 import { AppPagination } from "@/features";
 import { UpdateFeed, DeleteFeed } from "@/features/feeds";
 import { FeedItem } from "@/entities";

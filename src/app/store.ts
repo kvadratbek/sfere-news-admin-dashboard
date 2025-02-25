@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { feedCategoriesApi } from "@/shared/api/feed-categories-api";
 import { feedsApi } from "@/shared/api/feeds-api";
 import { feedContentApi } from "@/shared/api/feed-content-api";
-import { feedItemsApi } from "@/shared/api/feed-items";
+import { feedItemsApi } from "@/shared/api/feed-items-api";
 import { languageReducer } from "@/shared/hooks";
 
 export const store = configureStore({
@@ -33,11 +33,4 @@ export const store = configureStore({
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-// Actual inferred type will be:
-// {
-//   [feedsApi.reducerPath]: ReturnType<typeof feedsApi.reducer>,
-//   [feedCategoriesApi.reducerPath]: ReturnType<typeof feedCategoriesApi.reducer>,
-//   [feedContentApi.reducerPath]: ReturnType<typeof feedContentApi.reducer>,
-//   language: ReturnType<typeof languageReducer>
-// }
 export type AppDispatch = typeof store.dispatch;
