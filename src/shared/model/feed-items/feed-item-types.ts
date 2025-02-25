@@ -8,9 +8,9 @@ interface IFeedItem {
   lang: string;
   link: string;
   pulished_at?: string;
-  thumbnails: {
-    alt_text: string;
-    dld_url: string;
+  thumbnails?: {
+    alt_text?: string;
+    dld_url?: string;
     height?: number;
     src_url?: string;
     width?: number;
