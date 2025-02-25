@@ -1,6 +1,6 @@
 import { SidebarInset, SidebarProvider } from "@/shared/ui/sidebar";
 import { AppSidebar, AppHeader, ItemsList } from "@/widgets";
-import { CreateCategory } from "@/features/categories";
+import { CreateFeedItem } from "@/features/feed-items";
 
 export const FeedItems = () => {
   return (
@@ -9,9 +9,9 @@ export const FeedItems = () => {
       <SidebarInset>
         <AppHeader
           isInDashboardPage={false}
-          breadcrumbItemName="Feed Categories"
+          breadcrumbItemName="Feed Items"
           hasLangSelector={true}
-          actionButton={<CreateCategory />}
+          actionButton={<CreateFeedItem />}
         />
         <ItemsList />
       </SidebarInset>
