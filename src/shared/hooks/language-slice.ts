@@ -6,7 +6,7 @@ interface LanguageState {
 }
 
 const initialState: LanguageState = {
-  selectedLanguage: "en",
+  selectedLanguage: "uz",
   availableLanguages: [],
 };
 
