@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { feedsApi } from "@/shared/api/feeds-api";
 import { feedCategoriesApi } from "@/shared/api/feed-categories-api";
+import { feedsApi } from "@/shared/api/feeds-api";
 import { feedContentApi } from "@/shared/api/feed-content-api";
+import { feedItemsApi } from "@/shared/api/feed-items";
 import { languageReducer } from "@/shared/hooks";
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     [feedsApi.reducerPath]: feedsApi.reducer,
     [feedCategoriesApi.reducerPath]: feedCategoriesApi.reducer,
     [feedContentApi.reducerPath]: feedContentApi.reducer,
+    [feedItemsApi.reducerPath]: feedItemsApi.reducer,
     language: languageReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -23,6 +25,7 @@ export const store = configureStore({
       feedsApi.middleware,
       feedCategoriesApi.middleware,
       feedContentApi.middleware,
+      feedItemsApi.middleware,
     ]),
   // Explicitly configure devTools based on environment
   devTools: process.env.NODE_ENV !== "production",
