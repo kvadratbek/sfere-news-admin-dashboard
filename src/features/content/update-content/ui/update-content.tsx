@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -32,10 +32,9 @@ export const UpdateContent = ({ updateContentId }: IUpdateContent) => {
   // Populate form with existing data when feedData is available
   useEffect(() => {
     if (contentData) {
-      console.log("Setting form values from:", contentData);
-      setCategoryId(contentData.category_id || 0);
-      setContentLang(contentData.lang || "");
-      setContentLink(contentData.link || "");
+      setCategoryId(contentData.category_id);
+      setContentLang(contentData.lang);
+      setContentLink(contentData.link);
     }
   }, [contentData]);
 
@@ -50,6 +49,7 @@ export const UpdateContent = ({ updateContentId }: IUpdateContent) => {
 
     try {
       await updateContent({ id: updateContentId, data: content }).unwrap();
+      console.log(content);
       toast.success("Feed Content updated successfully!", {
         description: `Feed Content (ID: ${updateContentId}) has been updated`,
       });

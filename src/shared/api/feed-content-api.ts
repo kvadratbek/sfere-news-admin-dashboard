@@ -27,8 +27,8 @@ export const feedContentApi = createApi({
     // GET /v1/admin/feeds/content
     getFeedContent: builder.query<IFeedContent, number>({
       query: (id) => ({
-        url: `/v1/admin/feeds/content`,
-        params: { id },
+        url: `/v1/admin/feeds/content/${id}`,
+        method: "GET",
       }),
       providesTags: (result, error, id) => [{ type: "FeedContent", id }],
     }),
