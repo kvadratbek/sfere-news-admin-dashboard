@@ -3,7 +3,7 @@ import {
   ICategoryResponse,
   IGetCategoriesParams,
   IPostCategory,
-} from "../model/categories";
+} from "../model/feed-categories";
 
 export const feedCategoriesApi = createApi({
   reducerPath: "feedCategoriesApi",

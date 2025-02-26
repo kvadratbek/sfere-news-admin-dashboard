@@ -1,6 +1,6 @@
-import { Category } from "./category";
+import { FeedCategory } from "./feed-category";
 import { Feed } from "./feed";
-import { Content } from "./content";
+import { FeedContent } from "./feed-content";
 import { FeedItem } from "./feed-item";
 
-export { Category, Feed, Content, FeedItem };
+export { FeedCategory, Feed, FeedContent, FeedItem };

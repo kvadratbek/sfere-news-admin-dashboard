@@ -1,4 +1,4 @@
 import { AppPagination } from "./app-pagination";
-import { LangSelector } from "./lang-selector";
+import { LanguageSelector } from "./language-selector";
 
-export { AppPagination, LangSelector };
+export { AppPagination, LanguageSelector };

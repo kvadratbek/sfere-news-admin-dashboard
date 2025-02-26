@@ -84,7 +84,7 @@ export const CreateFeed = () => {
         <DialogHeader>
           <DialogTitle>Add New Feed</DialogTitle>
           <DialogDescription>
-            Fill out the form to add a new feed to the system
+            Fill out the form to add a new Feed to the system
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>

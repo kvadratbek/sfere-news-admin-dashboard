@@ -1,27 +1,33 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Dashboard, Categories, Feeds, Content, FeedItems } from "@/pages";
+import {
+  DashboardPage,
+  FeedCategoriesPage,
+  FeedsPage,
+  FeedContentsPage,
+  FeedItemsPage,
+} from "@/pages";
 
 export const AppRouter = () => {
   const routerConfig = createBrowserRouter([
     {
       path: "/",
-      element: <Dashboard />,
+      element: <DashboardPage />,
     },
     {
       path: "/feed-categories",
-      element: <Categories />,
+      element: <FeedCategoriesPage />,
     },
     {
       path: "/feeds",
-      element: <Feeds />,
+      element: <FeedsPage />,
     },
     {
       path: "/feeds/:feedId",
-      element: <Content />,
+      element: <FeedContentsPage />,
     },
     {
       path: "feed-items",
-      element: <FeedItems />,
+      element: <FeedItemsPage />,
     },
   ]);
   return <RouterProvider router={routerConfig} />;

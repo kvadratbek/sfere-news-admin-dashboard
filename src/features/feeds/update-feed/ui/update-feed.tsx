@@ -111,7 +111,7 @@ export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
         <DialogHeader>
           <DialogTitle>Update Feed</DialogTitle>
           <DialogDescription>
-            Complete the form to update an existing feed
+            Complete the form to update an existing Feed
           </DialogDescription>
         </DialogHeader>
         {isFetching ? (
