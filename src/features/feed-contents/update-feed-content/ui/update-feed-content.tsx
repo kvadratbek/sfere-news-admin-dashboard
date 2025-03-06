@@ -24,6 +24,7 @@ export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
   const [updateContent, { isLoading: isUpdating }] =
     useUpdateFeedContentMutation();
 
+  const [feedId, setFeedId] = useState(0);
   const [categoryId, setCategoryId] = useState(0);
   const [contentLang, setContentLang] = useState("");
   const [contentLink, setContentLink] = useState("");
@@ -32,6 +33,7 @@ export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
   // Populate form with existing data when feedData is available
   useEffect(() => {
     if (contentData) {
+      setFeedId(contentData.feed_id);
       setCategoryId(contentData.category_id);
       setContentLang(contentData.lang);
       setContentLink(contentData.link);
@@ -42,6 +44,7 @@ export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
     e.preventDefault();
 
     const content = {
+      feed_id: feedId,
       category_id: categoryId,
       lang: contentLang,
       link: contentLink,
@@ -49,7 +52,6 @@ export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
 
     try {
       await updateContent({ id: updateContentId, data: content }).unwrap();
-      console.log(content);
       toast.success("Feed Content updated successfully!", {
         description: `Feed Content (ID: ${updateContentId}) has been updated`,
       });
@@ -84,14 +86,28 @@ export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 py-4">
+              {/* Feed Content ID */}
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="feedContentId" className="text-center">
+                  Feed Content ID
+                </Label>
+                <Input
+                  id="feedContentId"
+                  value={updateContentId}
+                  className="col-span-3"
+                  disabled
+                />
+              </div>
               {/* Feed ID */}
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="feedId" className="text-center">
+                <Label htmlFor="feed-id" className="text-center">
                   Feed ID
                 </Label>
                 <Input
-                  id="feedId"
-                  value={updateContentId}
+                  type="number"
+                  id="feed-id"
+                  value={feedId}
+                  onChange={(e) => setFeedId(Number(e.target.value))}
                   className="col-span-3"
                   disabled
                 />
@@ -121,8 +137,6 @@ export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
                   onChange={(e) => setContentLang(e.target.value)}
                   className="col-span-3"
                 />
-                {/* Add similar debug info for other inputs */}
-                <div>Debug: {contentLang}</div>
               </div>
               {/* Content Link */}
               <div className="grid grid-cols-4 items-center gap-4">
@@ -140,15 +154,15 @@ export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
             </div>
             <DialogFooter className="mt-4">
               <Button
-                className="cursor-pointer"
+                className="cursor-pointer w-full"
                 variant="default"
                 type="submit"
                 disabled={isUpdating}
               >
-                {isUpdating ? "Updating..." : "Update Content"}
+                {isUpdating ? "Updating..." : "Update"}
               </Button>
               <Button
-                className="cursor-pointer"
+                className="cursor-pointer w-full"
                 variant="destructive"
                 type="reset"
                 onClick={() => setShowModal(false)}
