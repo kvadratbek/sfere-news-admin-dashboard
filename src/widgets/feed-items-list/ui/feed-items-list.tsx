@@ -1,67 +1,121 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { useGetAllFeedItemsQuery } from "@/shared/api/feed-items-api";
-import { AppPagination } from "@/features";
-// import { UpdateFeed, DeleteFeed } from "@/features/feeds";
-import { FeedItem } from "@/entities";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/shared/ui/table";
-import { Skeleton } from "@/shared/ui/skeleton";
+  AppPagination,
+  QueryId,
+  QueryLanguage,
+  QueryLimit,
+  QuerySort,
+} from "@/features";
+import { CreateFeedItem, UpdateFeedItem } from "@/features/feed-items";
+import { FeedItem, QueryFilter } from "@/entities";
+import { Table, TableBody } from "@/shared/ui/table";
 import { Button } from "@/shared/ui/button";
+import { LoadingSkeleton } from "./loading-skeleton";
+import { ItemsHeader } from "./items-header";
+import { ItemsFooter } from "./items-footer";
+
+const ControlBar = memo(
+  ({
+    queryLimit,
+    setQueryLimit,
+    queryFeedId,
+    setQueryFeedId,
+    queryFeedCategoryId,
+    setQueryFeedCategoryId,
+    querySort,
+    setQuerySort,
+  }: {
+    queryLimit: number | undefined;
+    setQueryLimit: (value: number | undefined) => void;
+    queryFeedId: number | undefined;
+    setQueryFeedId: (value: number | undefined) => void;
+    queryFeedCategoryId: number | undefined;
+    setQueryFeedCategoryId: (value: number | undefined) => void;
+    querySort: string | undefined;
+    setQuerySort: (value: string | undefined) => void;
+  }) => {
+    return (
+      <div className="flex justify-between items-center mt-4 p-4 rounded-xl bg-muted/50">
+        <QueryFilter>
+          <QueryLimit
+            labelText="Items per Page"
+            limitValue={queryLimit}
+            limitOnChange={setQueryLimit}
+          />
+          <QueryLanguage />
+          <QueryId
+            elementId="feed-id-query"
+            labelText="Filter by Feed"
+            placeholder="Feed ID"
+            id={queryFeedId}
+            onIdChange={setQueryFeedId}
+          />
+          <QueryId
+            elementId="feed-category-id-query"
+            labelText="Filter by Category"
+            placeholder="Category ID"
+            id={queryFeedCategoryId}
+            onIdChange={setQueryFeedCategoryId}
+          />
+          <QuerySort
+            labelText="Sort By"
+            selectedOption={querySort}
+            onOptionChange={setQuerySort}
+          />
+        </QueryFilter>
+        <CreateFeedItem />
+      </div>
+    );
+  }
+);
 
 export const FeedItemsList = () => {
   const selectedLanguage = useSelector(
     (state: RootState) => state.language.selectedLanguage
   );
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [queryLimit, setQueryLimit] = useState<number | undefined>(15);
+  const [queryFeedId, setQueryFeedId] = useState<number | undefined>(undefined);
+  const [queryFeedCategoryId, setQueryFeedCategoryId] = useState<
+    number | undefined
+  >(undefined);
+  const [querySort, setQuerySort] = useState<string | undefined>(undefined);
+
   const { data, isLoading, error } = useGetAllFeedItemsQuery({
-    limit: 10,
+    limit: queryLimit,
     page: currentPage,
+    feed_id: queryFeedId,
+    feed_category_id: queryFeedCategoryId,
     lang: selectedLanguage,
+    sort: querySort,
   });
+
   const totalItems = data?.total_items ?? 0;
-  const totalPages = totalItems / 10;
+  const totalPages = Math.ceil(totalItems / (queryLimit ?? 15));
   const items = data?.items;
 
   if (isLoading) {
     return (
       <div className="flex flex-1 flex-col gap-4 p-4">
+        <ControlBar
+          queryLimit={queryLimit}
+          setQueryLimit={setQueryLimit}
+          queryFeedId={queryFeedId}
+          setQueryFeedId={setQueryFeedId}
+          queryFeedCategoryId={queryFeedCategoryId}
+          setQueryFeedCategoryId={setQueryFeedCategoryId}
+          querySort={querySort}
+          setQuerySort={setQuerySort}
+        />
         <div className="rounded-xl bg-muted/50 p-4">
           <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Max Items</TableHead>
-                <TableHead>Priority</TableHead>
-                <TableHead>Lang</TableHead>
-                <TableHead>Logo</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Edit</TableHead>
-                <TableHead>Delete</TableHead>
-              </TableRow>
-            </TableHeader>
+            <ItemsHeader />
             <TableBody>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <TableRow key={index}>
-                  <TableCell colSpan={2}>
-                    <Skeleton className="h-[20.8px] w-[full] m-[5px]" />
-                  </TableCell>
-                  <TableCell colSpan={5}>
-                    <Skeleton className="h-[20.8px] w-[full] m-[5px]" />
-                  </TableCell>
-                  <TableCell colSpan={2}>
-                    <Skeleton className="h-[20.8px] w-[full] m-[5px]" />
-                  </TableCell>
-                </TableRow>
+              {Array.from({ length: queryLimit || 15 }).map((_, index) => (
+                <LoadingSkeleton key={index} />
               ))}
             </TableBody>
           </Table>
@@ -73,8 +127,18 @@ export const FeedItemsList = () => {
   if (error) {
     return (
       <div className="flex flex-1 flex-col gap-4 p-4">
+        <ControlBar
+          queryLimit={queryLimit}
+          setQueryLimit={setQueryLimit}
+          queryFeedId={queryFeedId}
+          setQueryFeedId={setQueryFeedId}
+          queryFeedCategoryId={queryFeedCategoryId}
+          setQueryFeedCategoryId={setQueryFeedCategoryId}
+          querySort={querySort}
+          setQuerySort={setQuerySort}
+        />
         <div className="text-center rounded-xl bg-muted/50 p-4">
-          ❌ Error fetching feeds. Please try again.
+          ❌ Error fetching Feed Items. Please try again
         </div>
       </div>
     );
@@ -82,45 +146,37 @@ export const FeedItemsList = () => {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
-      <div className="rounded-xl bg-muted/50 p-4">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-center">ID</TableHead>
-              <TableHead className="text-center">Feed ID</TableHead>
-              <TableHead className="text-center">Category ID</TableHead>
-              <TableHead className="text-center">Title</TableHead>
-              <TableHead className="text-center">Description</TableHead>
-              <TableHead className="text-center">Lang</TableHead>
-              <TableHead className="text-center">Thumbnail</TableHead>
-              <TableHead className="text-center">Edit</TableHead>
-              <TableHead className="text-center">Delete</TableHead>
-            </TableRow>
-          </TableHeader>
+      <ControlBar
+        queryLimit={queryLimit}
+        setQueryLimit={setQueryLimit}
+        queryFeedId={queryFeedId}
+        setQueryFeedId={setQueryFeedId}
+        queryFeedCategoryId={queryFeedCategoryId}
+        setQueryFeedCategoryId={setQueryFeedCategoryId}
+        querySort={querySort}
+        setQuerySort={setQuerySort}
+      />
+      <div className="w-full max-w-full overflow-x-auto rounded-xl bg-muted/50 p-4">
+        <Table className="min-w-full">
+          <ItemsHeader />
           <TableBody>
             {items?.map((item) => (
               <FeedItem
                 key={item.id}
                 feedItem={item}
-                updateFeature={<Button />}
-                deleteFeature={<Button />}
-                // updateFeature={<UpdateFeed updateFeedId={item.id} />}
-                // deleteFeature={<DeleteFeed deleteFeedId={item.id} />}
+                updateFeature={<UpdateFeedItem updateFeedItemId={item.id} />}
+                deleteFeature={<Button variant="destructive">Delete</Button>}
               />
             ))}
           </TableBody>
           {totalPages > 0 && (
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={8}>
-                  <AppPagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                  />
-                </TableCell>
-              </TableRow>
-            </TableFooter>
+            <ItemsFooter>
+              <AppPagination
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+                totalPages={totalPages}
+              />
+            </ItemsFooter>
           )}
         </Table>
       </div>
