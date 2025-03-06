@@ -6,7 +6,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/shared/ui/pagination";
+} from "@/shared/ui/pagination"; // Adjust path as needed
 import { AppPaginationProps } from "../model";
 
 export const AppPagination = ({
@@ -14,12 +14,58 @@ export const AppPagination = ({
   currentPage,
   onPageChange,
 }: AppPaginationProps) => {
-  if (totalPages <= 1) return null; // Hide pagination if only one page exists
+  if (totalPages <= 1) return null;
+
+  const getPageNumbers = () => {
+    const maxPagesToShow = 5;
+    const pages: (number | string)[] = [];
+    const halfWindow = Math.floor(maxPagesToShow / 2);
+
+    // Ensure totalPages is an integer
+    const safeTotalPages = Math.ceil(totalPages);
+
+    // Calculate start and end pages
+    let startPage = Math.max(1, currentPage - halfWindow);
+    let endPage = Math.min(safeTotalPages, startPage + maxPagesToShow - 1);
+
+    // Adjust startPage if near the end to always show maxPagesToShow pages (if possible)
+    if (
+      endPage - startPage + 1 < maxPagesToShow &&
+      safeTotalPages >= maxPagesToShow
+    ) {
+      startPage = Math.max(1, safeTotalPages - maxPagesToShow + 1);
+      endPage = safeTotalPages;
+    }
+
+    // Add page numbers
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    // Add first page and ellipsis if needed
+    if (startPage > 2) {
+      pages.unshift("ellipsis-start");
+      pages.unshift(1);
+    } else if (startPage === 2) {
+      pages.unshift(1);
+    }
+
+    // Add last page and ellipsis if needed
+    if (endPage < safeTotalPages - 1) {
+      pages.push("ellipsis-end");
+      pages.push(safeTotalPages);
+    } else if (endPage === safeTotalPages - 1) {
+      pages.push(safeTotalPages);
+    }
+
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers();
 
   return (
     <Pagination>
-      <PaginationContent>
-        {/* Previous Button */}
+      <PaginationContent className="flex flex-wrap justify-center gap-1">
         <PaginationItem>
           <PaginationPrevious
             href="#"
@@ -28,52 +74,46 @@ export const AppPagination = ({
               currentPage === 1 ? "opacity-50 pointer-events-none" : ""
             }
             onClick={(e) => {
-              if (currentPage === 1) {
-                e.preventDefault();
-              } else {
-                onPageChange(currentPage - 1);
-              }
+              e.preventDefault();
+              if (currentPage > 1) onPageChange(currentPage - 1);
             }}
           />
         </PaginationItem>
 
-        {/* Page Numbers */}
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <PaginationItem key={page}>
-            <PaginationLink
-              href="#"
-              isActive={page === currentPage}
-              onClick={(e) => {
-                e.preventDefault();
-                onPageChange(page);
-              }}
-            >
-              {page}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
-
-        {/* Ellipsis for Large Pagination */}
-        {totalPages > 5 && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
+        {pageNumbers.map((page, index) =>
+          typeof page === "number" ? (
+            <PaginationItem key={page}>
+              <PaginationLink
+                href="#"
+                isActive={page === currentPage}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onPageChange(page);
+                }}
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          ) : (
+            <PaginationItem key={page + index}>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )
         )}
 
-        {/* Next Button */}
         <PaginationItem>
           <PaginationNext
             href="#"
-            aria-disabled={currentPage === totalPages}
+            aria-disabled={currentPage === Math.ceil(totalPages)}
             className={
-              currentPage === totalPages ? "opacity-50 pointer-events-none" : ""
+              currentPage === Math.ceil(totalPages)
+                ? "opacity-50 pointer-events-none"
+                : ""
             }
             onClick={(e) => {
-              if (currentPage === totalPages) {
-                e.preventDefault();
-              } else {
+              e.preventDefault();
+              if (currentPage < Math.ceil(totalPages))
                 onPageChange(currentPage + 1);
-              }
             }}
           />
         </PaginationItem>
