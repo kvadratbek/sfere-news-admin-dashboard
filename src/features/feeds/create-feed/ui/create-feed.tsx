@@ -13,6 +13,7 @@ import {
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { Textarea } from "@/shared/ui/textarea";
+import { toast } from "sonner";
 
 export const CreateFeed = () => {
   const [baseUrl, setBaseUrl] = useState("");
@@ -65,11 +66,15 @@ export const CreateFeed = () => {
     };
 
     try {
-      const response = await createFeed(feed).unwrap();
-      console.log("Created feed:", response);
+      await createFeed(feed).unwrap();
+      toast.success("Feed created successfully!", {
+        description: `Feed "${translations[0].title}" has been created`,
+      });
       setShowModal(false);
-    } catch (err) {
-      console.error("Error creating feed:", err);
+    } catch (error: unknown) {
+      toast.error("Failed to create feed", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
     }
   };
 
@@ -199,7 +204,7 @@ export const CreateFeed = () => {
 
           <DialogFooter className="mt-4">
             <Button
-              className="cursor-pointer"
+              className="cursor-pointer w-full"
               variant="secondary"
               type="button"
               onClick={handleAddTranslation}
@@ -208,15 +213,15 @@ export const CreateFeed = () => {
               + Translation
             </Button>
             <Button
-              className="cursor-pointer"
+              className="cursor-pointer w-full"
               variant="default"
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? "Adding..." : "Add Feed"}
+              {isLoading ? "Adding..." : "Add"}
             </Button>
             <Button
-              className="cursor-pointer"
+              className="cursor-pointer w-full"
               variant="destructive"
               onClick={() => setShowModal(false)}
             >
