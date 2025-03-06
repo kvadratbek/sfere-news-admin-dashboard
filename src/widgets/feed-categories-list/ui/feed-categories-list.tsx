@@ -1,27 +1,34 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { useGetAllCategoriesQuery } from "@/shared/api/feed-categories-api";
-import {
-  UpdateFeedCategory,
-  DeleteFeedCategory,
-} from "@/features/feed-categories";
-import { FeedCategory } from "@/entities";
+import { Skeleton } from "@/shared/ui/skeleton";
 import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/shared/ui/table";
-import { Skeleton } from "@/shared/ui/skeleton";
+import { FeedCategory, QueryFilter } from "@/entities";
+import { AppPagination, QueryLanguage, QueryLimit } from "@/features";
+import {
+  UpdateFeedCategory,
+  DeleteFeedCategory,
+  CreateFeedCategory,
+} from "@/features/feed-categories";
+import { useGetAllCategoriesQuery } from "@/shared/api/feed-categories-api";
 
 export const FeedCategoriesList = () => {
   const selectedLanguage = useSelector(
     (state: RootState) => state.language.selectedLanguage
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [queryLimit, setQueryLimit] = useState(100);
+  const totalPages = 1;
   const { data, isLoading, error } = useGetAllCategoriesQuery({
-    limit: 100,
+    limit: queryLimit,
     page: 1,
     lang: selectedLanguage,
   });
@@ -74,8 +81,19 @@ export const FeedCategoriesList = () => {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
+      <div className="flex justify-between items-center mt-4 p-4 rounded-xl bg-muted/50">
+        <QueryFilter>
+          <QueryLimit
+            labelText="Categories per Page"
+            limitValue={queryLimit}
+            limitOnChange={(e) => setQueryLimit(Number(e.target.value))}
+          />
+          <QueryLanguage />
+        </QueryFilter>
+        <CreateFeedCategory />
+      </div>
       <div className="rounded-xl bg-muted/50 p-4">
-        <Table className="">
+        <Table className="w-full">
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
@@ -99,6 +117,19 @@ export const FeedCategoriesList = () => {
               />
             ))}
           </TableBody>
+          {totalPages > 0 && (
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={9}>
+                  <AppPagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          )}
         </Table>
       </div>
     </div>
