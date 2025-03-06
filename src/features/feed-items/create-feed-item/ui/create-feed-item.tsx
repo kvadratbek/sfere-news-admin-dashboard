@@ -16,12 +16,16 @@ import { toast } from "sonner";
 
 export const CreateFeedItem = () => {
   const [categoryId, setCategoryId] = useState(0);
+  const [content, setContent] = useState("");
   const [description, setDescription] = useState("");
   const [feedId, setFeedId] = useState(0);
   const [lang, setLang] = useState("");
   const [link, setLink] = useState("");
-  // const [thumbnailAltText, setThumbnailAltText] = useState("");
-  // const [thumbnailDldUrl, setThumbnailDldUrl] = useState("");
+  const [publishedAt, setPublishedAt] = useState("");
+  const [sourceUrl, setSourceUrl] = useState("");
+  const [sourceTitle, setSourceTitle] = useState("");
+  const [thumbnailAltText, setThumbnailAltText] = useState("");
+  const [thumbnailDldUrl, setThumbnailDldUrl] = useState("");
   const [title, setTitle] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [createFeedItem, { isLoading }] = useCreateFeedItemMutation();
@@ -31,14 +35,18 @@ export const CreateFeedItem = () => {
 
     const feedItem = {
       category_id: categoryId,
+      content: content,
       description: description,
       feed_id: feedId,
       lang: lang,
       link: link,
-      // thumbnails: {
-      //   alt_text: thumbnailAltText,
-      //   dld_url: thumbnailDldUrl,
-      // },
+      published_at: publishedAt,
+      soruce_url: sourceUrl,
+      source_title: sourceTitle,
+      thumbnails: {
+        alt_text: thumbnailAltText,
+        src_url: thumbnailDldUrl,
+      },
       title: title,
     };
 
@@ -50,6 +58,7 @@ export const CreateFeedItem = () => {
       });
       setShowModal(false);
     } catch (error: unknown) {
+      console.log(`Error creating this Feed Item: ${feedItem}`);
       console.error("Error creating Feed Item:", error);
       toast.error("Failed to create Feed Item", {
         description: error instanceof Error ? error.message : "Unknown Error",
@@ -86,6 +95,19 @@ export const CreateFeedItem = () => {
                 value={categoryId}
                 placeholder="1 / 2 / ..."
                 onChange={(e) => setCategoryId(Number(e.target.value))}
+                className="col-span-3"
+              />
+            </div>
+            {/* Content */}
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="content" className="text-center">
+                Content
+              </Label>
+              <Input
+                id="content"
+                value={content}
+                placeholder="https://content.news.com/rss"
+                onChange={(e) => setContent(e.target.value)}
                 className="col-span-3"
               />
             </div>
@@ -142,8 +164,47 @@ export const CreateFeedItem = () => {
                 className="col-span-3"
               />
             </div>
+            {/* Published At */}
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="published-at" className="text-center">
+                Published At
+              </Label>
+              <Input
+                id="published-at"
+                value={publishedAt}
+                placeholder="Wed, 24 Feb 2016 11:42:23 EST"
+                onChange={(e) => setPublishedAt(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            {/* Source URL */}
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="source-url" className="text-center">
+                Source URL
+              </Label>
+              <Input
+                id="source-url"
+                value={sourceUrl}
+                placeholder="https://news.com"
+                onChange={(e) => setSourceUrl(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            {/* Source Title */}
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="source-title" className="text-center">
+                Source Title
+              </Label>
+              <Input
+                id="source-title"
+                value={sourceTitle}
+                placeholder="News / BBC / Kun.uz"
+                onChange={(e) => setSourceTitle(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
             {/* Thumbnail Alt Text */}
-            {/* <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="alt-text" className="text-center">
                 Thumbnail Alt Text
               </Label>
@@ -154,9 +215,9 @@ export const CreateFeedItem = () => {
                 onChange={(e) => setThumbnailAltText(e.target.value)}
                 className="col-span-3"
               />
-            </div> */}
+            </div>
             {/* Thumbnail Source */}
-            {/* <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="img-src" className="text-center">
                 Thumbnail Source
               </Label>
@@ -167,7 +228,7 @@ export const CreateFeedItem = () => {
                 onChange={(e) => setThumbnailDldUrl(e.target.value)}
                 className="col-span-3"
               />
-            </div> */}
+            </div>
             {/* Title */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="title" className="text-center">
