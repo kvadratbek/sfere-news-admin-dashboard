@@ -1,12 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { feedCategoriesApi } from "@/shared/api/feed-categories-api";
-import { feedsApi } from "@/shared/api/feeds-api";
-import { feedContentsApi } from "@/shared/api/feed-contents-api";
-import { feedItemsApi } from "@/shared/api/feed-items-api";
+import {
+  authApi,
+  feedCategoriesApi,
+  feedsApi,
+  feedContentsApi,
+  feedItemsApi,
+} from "@/shared/api";
+import authRedcuer from "@/features/authentication";
 import { languageReducer } from "@/shared/hooks";
 
 export const store = configureStore({
   reducer: {
+    auth: authRedcuer,
+    [authApi.reducerPath]: authApi.reducer,
     [feedsApi.reducerPath]: feedsApi.reducer,
     [feedCategoriesApi.reducerPath]: feedCategoriesApi.reducer,
     [feedContentsApi.reducerPath]: feedContentsApi.reducer,
@@ -22,6 +28,7 @@ export const store = configureStore({
         ignoredPaths: [],
       },
     }).concat([
+      authApi.middleware,
       feedsApi.middleware,
       feedCategoriesApi.middleware,
       feedContentsApi.middleware,
