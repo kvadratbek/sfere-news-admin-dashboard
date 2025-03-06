@@ -1,8 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -11,15 +10,8 @@ import { ModeToggle } from "@/shared/ui/mode-toggle";
 import { Separator } from "@/shared/ui/separator";
 import { SidebarTrigger } from "@/shared/ui/sidebar";
 import { IAppHeader } from "../model";
-import { LanguageSelector } from "@/features";
 
-export const AppHeader = ({
-  isInDashboardPage = false,
-  breadcrumbItemName,
-  hasLangSelector,
-  actionButton,
-}: IAppHeader) => {
-  const navigateTo = useNavigate();
+export const AppHeader = ({ breadcrumbItemName }: IAppHeader) => {
   const { feedId } = useParams();
 
   return (
@@ -28,24 +20,13 @@ export const AppHeader = ({
       <Separator orientation="vertical" className="mr-1 h-4" />
       <ModeToggle />
       <Separator orientation="vertical" className="mr-1 h-4" />
-      {hasLangSelector && (
-        <>
-          <LanguageSelector />
-          <Separator orientation="vertical" className="mr-1 h-4" />
-        </>
-      )}
       <div className="flex justify-between items-center w-full">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink
-                className="cursor-pointer"
-                onClick={() => navigateTo("/")}
-              >
-                Dashboard
-              </BreadcrumbLink>
+              <BreadcrumbPage>Dashboard</BreadcrumbPage>
             </BreadcrumbItem>
-            {!isInDashboardPage && !feedId && (
+            {!feedId && breadcrumbItemName && (
               <>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
@@ -53,16 +34,11 @@ export const AppHeader = ({
                 </BreadcrumbItem>
               </>
             )}
-            {!isInDashboardPage && feedId && (
+            {feedId && breadcrumbItemName && (
               <>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbLink
-                    className="transition-colors cursor-pointer"
-                    onClick={() => navigateTo("/feeds")}
-                  >
-                    {breadcrumbItemName}
-                  </BreadcrumbLink>
+                  <BreadcrumbPage>{breadcrumbItemName}</BreadcrumbPage>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
@@ -72,7 +48,6 @@ export const AppHeader = ({
             )}
           </BreadcrumbList>
         </Breadcrumb>
-        {actionButton}
       </div>
     </header>
   );
