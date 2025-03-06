@@ -125,15 +125,15 @@ export const CreateFeedContent = () => {
 
           <DialogFooter className="mt-4">
             <Button
-              className="cursor-pointer"
+              className="cursor-pointer w-full"
               variant="default"
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? "Adding..." : "Add Content"}
+              {isLoading ? "Adding..." : "Add"}
             </Button>
             <Button
-              className="cursor-pointer"
+              className="cursor-pointer w-full"
               variant="destructive"
               type="reset"
               onClick={() => setShowModal(false)}
