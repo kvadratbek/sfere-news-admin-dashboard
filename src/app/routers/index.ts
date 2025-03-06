@@ -1,3 +1,3 @@
-import { AppRouter } from "./app-router";
+import { AppRouter } from "./app-router-protected";
 
 export { AppRouter };
