@@ -4,10 +4,12 @@ interface IFeedItem {
   created_at?: string;
   description: string;
   feed_id: number;
-  id?: number;
+  id: number;
   lang: string;
   link: string;
-  pulished_at?: string;
+  published_at?: string;
+  soruce_url?: string;
+  source_title?: string;
   thumbnails?: {
     alt_text?: string;
     dld_url?: string;
