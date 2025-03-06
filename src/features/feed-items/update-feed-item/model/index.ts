@@ -1,3 +1,3 @@
-import { IUpdateFeedItems } from "./types";
+import { IUpdateFeedItem } from "./types";
 
-export type { IUpdateFeedItems };
+export type { IUpdateFeedItem };

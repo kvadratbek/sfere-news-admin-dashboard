@@ -1,5 +1,5 @@
-interface IUpdateFeedItems {
+interface IUpdateFeedItem {
   updateFeedItemId: number;
 }
 
-export type { IUpdateFeedItems };
+export type { IUpdateFeedItem };
