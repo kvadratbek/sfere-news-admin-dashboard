@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { StoreProvider, ThemeProvider } from "./providers";
-import { AppRouter } from "./routers";
+import { AppRouter } from "./routers/app-router";
 import "./styles/style.css";
 import { Toaster } from "sonner";
 
