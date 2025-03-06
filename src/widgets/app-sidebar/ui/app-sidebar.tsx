@@ -26,7 +26,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <a
                 onClick={() => {
-                  navigateTo("/");
+                  navigateTo("/dashboard");
                 }}
                 className="cursor-pointer"
               >
