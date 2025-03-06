@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { useGetAllFeedsQuery } from "@/shared/api/feeds-api";
-import { AppPagination } from "@/features";
-import { ViewContents, UpdateFeed, DeleteFeed } from "@/features/feeds";
-import { CalculatePagesNumber } from "../lib";
-import { Feed } from "@/entities";
+import { Skeleton } from "@/shared/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -15,20 +11,35 @@ import {
   TableHeader,
   TableRow,
 } from "@/shared/ui/table";
-import { Skeleton } from "@/shared/ui/skeleton";
+import { Feed, QueryFilter } from "@/entities";
+import {
+  AppPagination,
+  QueryLanguage,
+  QueryLimit,
+  QueryPriority,
+} from "@/features";
+import {
+  CreateFeed,
+  ViewContents,
+  UpdateFeed,
+  DeleteFeed,
+} from "@/features/feeds";
+import { useGetAllFeedsQuery } from "@/shared/api/feeds-api";
 
 export const FeedsList = () => {
   const selectedLanguage = useSelector(
     (state: RootState) => state.language.selectedLanguage
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = CalculatePagesNumber();
+  const [queryLimit, setQueryLimit] = useState(100);
+  const [queryPriority, setQueryPriority] = useState(true);
   const { data, isLoading, error } = useGetAllFeedsQuery({
-    limit: 10,
+    limit: queryLimit,
     page: currentPage,
-    priority: false,
+    priority: queryPriority,
     lang: selectedLanguage,
   });
+  const totalPages = 1;
   const dataFeeds = data;
 
   if (isLoading) {
@@ -82,8 +93,25 @@ export const FeedsList = () => {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
-      <div className="rounded-xl bg-muted/50 p-4">
-        <Table className="">
+      <div className="flex justify-between items-center mt-4 p-4 rounded-xl bg-muted/50">
+        <QueryFilter>
+          <QueryLimit
+            labelText="Feeds per Page"
+            limitValue={queryLimit}
+            limitOnChange={(e) => setQueryLimit(Number(e.target.value))}
+          />
+          <QueryPriority
+            onPriorityChange={() =>
+              setQueryPriority((queryPriority) => !queryPriority)
+            }
+            priorityStatus={queryPriority ? "On" : "Off"}
+          />
+          <QueryLanguage />
+        </QueryFilter>
+        <CreateFeed />
+      </div>
+      <div className="w-full max-w-full overflow-x-auto rounded-xl bg-muted/50 p-4">
+        <Table className="min-w-full">
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
@@ -91,7 +119,7 @@ export const FeedsList = () => {
               <TableHead>Lang</TableHead>
               <TableHead>Logo</TableHead>
               <TableHead>Title</TableHead>
-              <TableHead className="max-w-[50%]">Description</TableHead>
+              <TableHead>Description</TableHead>
               <TableHead>View Contents</TableHead>
               <TableHead>Edit</TableHead>
               <TableHead>Delete</TableHead>
@@ -111,7 +139,7 @@ export const FeedsList = () => {
           {totalPages > 0 && (
             <TableFooter>
               <TableRow>
-                <TableCell colSpan={8}>
+                <TableCell colSpan={9}>
                   <AppPagination
                     currentPage={currentPage}
                     totalPages={totalPages}
