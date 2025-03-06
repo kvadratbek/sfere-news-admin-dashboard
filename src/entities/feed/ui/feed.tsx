@@ -28,13 +28,15 @@ export const Feed = ({
       </TableCell>
       <TableCell>
         <a href={feed.base_url} target="_blank">
-          <Button variant="ghost" className="cursor-pointer">
+          <Button variant="ghost" className="cursor-pointer font-mono">
             {prioritizedTranslation?.title ?? "No title"}
           </Button>
         </a>
       </TableCell>
       <TableCell>
-        {prioritizedTranslation?.description ?? "No description"}
+        <span className="text-wrap font-mono">
+          {prioritizedTranslation?.description ?? "No description"}
+        </span>
       </TableCell>
       <TableCell>{viewContentsFeature}</TableCell>
       <TableCell>{updateFeature}</TableCell>
