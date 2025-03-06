@@ -1,51 +1,72 @@
+import { useState } from "react";
+import { cn } from "@/shared/lib";
 import { TableCell, TableRow } from "@/shared/ui/table";
+import { Dialog, DialogContent, DialogTrigger } from "@/shared/ui/dialog";
+import { Collapsible, CollapsibleTrigger } from "@/shared/ui/collapsible";
 import { Button } from "@/shared/ui/button";
 import { IFeedItemEntity } from "../model";
-import { Dialog, DialogContent, DialogTrigger } from "@/shared/ui/dialog";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/shared/ui/collapsible";
 
 export const FeedItem = ({
   feedItem,
   deleteFeature,
   updateFeature,
 }: IFeedItemEntity) => {
+  const [titleIsOpen, setTitleIsOpen] = useState(false);
+  const [descIsOpen, setDescIsOpen] = useState(false);
+
   return (
     <TableRow key={feedItem.id}>
       <TableCell>{feedItem.id ?? "No Data"}</TableCell>
       <TableCell>{feedItem.feed_id ?? "No Data"}</TableCell>
       <TableCell>{feedItem.category_id ?? "No Data"}</TableCell>
       <TableCell>
-        <Collapsible className="w-[10vw] space-y-2">
+        <Collapsible
+          open={titleIsOpen}
+          onOpenChange={setTitleIsOpen}
+          className="max-w-[15vw] space-y-2" // Keep width constraint
+        >
           <CollapsibleTrigger asChild>
-            <Button variant="ghost" className="cursor-pointer w-[100%]">
-              Click to see the Title
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div className="rounded-md border px-4 py-3 font-mono text-sm">
-              <a href={feedItem.link} className="underline text-center">
-                {feedItem.title ?? "No Data"}
-              </a>
+            <div
+              className={cn(
+                "rounded-md py-3 font-mono text-sm cursor-pointer",
+                titleIsOpen
+                  ? "text-wrap whitespace-normal" // Full text when open
+                  : "whitespace-nowrap overflow-hidden overflow-ellipsis" // Truncated when closed
+              )}
+            >
+              {feedItem.title ? (
+                titleIsOpen ? (
+                  <a href={feedItem.link} className="underline">
+                    {feedItem.title ?? "No Data"}
+                  </a>
+                ) : (
+                  feedItem.title
+                )
+              ) : (
+                "No Data"
+              )}
             </div>
-          </CollapsibleContent>
+          </CollapsibleTrigger>
         </Collapsible>
       </TableCell>
       <TableCell>
-        <Collapsible className="w-[25vw] space-y-2">
+        <Collapsible
+          open={descIsOpen}
+          onOpenChange={setDescIsOpen}
+          className="max-w-[25vw] space-y-2"
+        >
           <CollapsibleTrigger asChild>
-            <Button variant="ghost" className="cursor-pointer w-[100%]">
-              Click to see the Description
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div className="rounded-md border px-4 py-3 font-mono text-sm">
+            <div
+              className={cn(
+                "rounded-md py-3 font-mono text-sm cursor-pointer",
+                descIsOpen
+                  ? "text-wrap whitespace-normal"
+                  : "whitespace-nowrap overflow-hidden overflow-ellipsis"
+              )}
+            >
               {feedItem.description ?? "No Data"}
             </div>
-          </CollapsibleContent>
+          </CollapsibleTrigger>
         </Collapsible>
       </TableCell>
       <TableCell>{feedItem.lang ?? "No Data"}</TableCell>
