@@ -20,7 +20,7 @@ export const NewsNumberChart = () => {
     <Card className="h-[max-content]">
       <CardHeader>
         <CardTitle>Number of News Articles</CardTitle>
-        <CardDescription>September 2024 - February 2025</CardDescription>
+        <CardDescription>October 2024 - March 2025</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

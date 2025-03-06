@@ -25,7 +25,7 @@ export const VisitorsByBrowser = () => {
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Visitors by Browser</CardTitle>
-        <CardDescription>September 2024 - February 2025</CardDescription>
+        <CardDescription>October 2024 - March 2025</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
