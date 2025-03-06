@@ -15,7 +15,7 @@ export const ViewContents = ({ feedId }: IViewContacts) => {
       variant="secondary"
       onClick={handleViewContents}
     >
-      View Contents
+      Contents
     </Button>
   );
 };
