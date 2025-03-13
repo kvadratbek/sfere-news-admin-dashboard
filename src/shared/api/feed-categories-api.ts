@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   ICategoryResponse,
-  IGetCategoriesParams,
   IPostCategory,
-} from "../model/feed-categories";
+  IGetCategoriesParams,
+} from "@/shared/model/feed-categories";
 
 export const feedCategoriesApi = createApi({
   reducerPath: "feedCategoriesApi",
