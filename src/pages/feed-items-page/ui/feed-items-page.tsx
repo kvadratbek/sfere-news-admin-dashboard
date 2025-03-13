@@ -1,18 +1,12 @@
 import { SidebarInset, SidebarProvider } from "@/shared/ui/sidebar";
-import { AppSidebar, AppHeader, FeedItemsList } from "@/widgets";
-import { CreateFeedItem } from "@/features/feed-items";
+import { AppHeader, AppSidebar, FeedItemsList } from "@/widgets";
 
 export const FeedItemsPage = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <AppHeader
-          isInDashboardPage={false}
-          breadcrumbItemName="Feed Items"
-          hasLangSelector={true}
-          actionButton={<CreateFeedItem />}
-        />
+        <AppHeader breadcrumbItemName="Feed Items" />
         <FeedItemsList />
       </SidebarInset>
     </SidebarProvider>
