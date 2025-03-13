@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useCreateFeedItemMutation } from "@/shared/api/feed-items-api";
-import { Button } from "@/shared/ui/button";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -10,23 +9,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/ui/dialog";
-import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
-import { toast } from "sonner";
+import { Input } from "@/shared/ui/input";
+import { Textarea } from "@/shared/ui/textarea";
+import { Button } from "@/shared/ui/button";
+import { useCreateFeedItemMutation } from "@/shared/api/feed-items-api";
 
 export const CreateFeedItem = () => {
   const [categoryId, setCategoryId] = useState(0);
   const [content, setContent] = useState("");
-  const [description, setDescription] = useState("");
+  const [feedItemDescription, setFeedItemDescription] = useState("");
   const [feedId, setFeedId] = useState(0);
-  const [lang, setLang] = useState("");
-  const [link, setLink] = useState("");
-  const [publishedAt, setPublishedAt] = useState("");
-  const [sourceUrl, setSourceUrl] = useState("");
-  const [sourceTitle, setSourceTitle] = useState("");
-  const [thumbnailAltText, setThumbnailAltText] = useState("");
-  const [thumbnailDldUrl, setThumbnailDldUrl] = useState("");
-  const [title, setTitle] = useState("");
+  const [feedItemLanguage, setFeedItemLanguage] = useState("");
+  const [feedItemlink, setFeedItemLink] = useState("");
+  const [feedItemPublishedAt, setFeedItemPublishedAt] = useState("");
+  const [feedSourceUrl, setFeedSourceUrl] = useState("");
+  const [feedSourceTitle, setFeedSourceTitle] = useState("");
+  const [feedItemThumbnailAltText, setFeedItemThumbnailAltText] = useState("");
+  const [feedItemThumbnailDldUrl, setFeedItemThumbnailDldUrl] = useState("");
+  const [feedItemtitle, setFeedItemTitle] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [createFeedItem, { isLoading }] = useCreateFeedItemMutation();
 
@@ -36,30 +37,29 @@ export const CreateFeedItem = () => {
     const feedItem = {
       category_id: categoryId,
       content: content,
-      description: description,
+      description: feedItemDescription,
       feed_id: feedId,
-      lang: lang,
-      link: link,
-      published_at: publishedAt,
-      soruce_url: sourceUrl,
-      source_title: sourceTitle,
+      lang: feedItemLanguage,
+      link: feedItemlink,
+      pulished_at: feedItemPublishedAt,
+      soruce_url: feedSourceUrl,
+      source_title: feedSourceTitle,
       thumbnails: {
-        alt_text: thumbnailAltText,
-        src_url: thumbnailDldUrl,
+        alt_text: feedItemThumbnailAltText,
+        dld_url: feedItemThumbnailDldUrl,
       },
-      title: title,
+      title: feedItemtitle,
     };
 
     try {
       const response = await createFeedItem(feedItem).unwrap();
       console.log("Created feed item:", response);
       toast.success("Feed Item created successfully!", {
-        description: `Feed Item "${title}" has been created`,
+        description: `Feed Item "${feedItemtitle}" has been created`,
       });
       setShowModal(false);
     } catch (error: unknown) {
-      console.log(`Error creating this Feed Item: ${feedItem}`);
-      console.error("Error creating Feed Item:", error);
+      console.error(`Error creating this Feed Item: ${feedItem}`, error);
       toast.error("Failed to create Feed Item", {
         description: error instanceof Error ? error.message : "Unknown Error",
       });
@@ -86,18 +86,19 @@ export const CreateFeedItem = () => {
           <div className="grid gap-4 py-4">
             {/* Category ID */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="categoryId" className="text-center">
+              <Label htmlFor="category-id" className="text-center">
                 Category ID
               </Label>
               <Input
                 type="number"
-                id="categoryId"
+                id="category-id"
                 value={categoryId}
                 placeholder="1 / 2 / ..."
                 onChange={(e) => setCategoryId(Number(e.target.value))}
                 className="col-span-3"
               />
             </div>
+
             {/* Content */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="content" className="text-center">
@@ -111,59 +112,64 @@ export const CreateFeedItem = () => {
                 className="col-span-3"
               />
             </div>
+
             {/* Description */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-center">
+              <Label htmlFor="item-description" className="text-center">
                 Description
               </Label>
-              <Input
-                id="description"
-                value={description}
+              <Textarea
+                id="item-description"
+                value={feedItemDescription}
                 placeholder="Enter the description of the item"
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => setFeedItemDescription(e.target.value)}
                 className="col-span-3"
               />
             </div>
+
             {/* Feed ID */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="feedId" className="text-center">
+              <Label htmlFor="feed-id" className="text-center">
                 Feed ID
               </Label>
               <Input
                 type="number"
-                id="feedId"
+                id="feed-id"
                 value={feedId}
                 placeholder="1 / 2 / ..."
                 onChange={(e) => setFeedId(Number(e.target.value))}
                 className="col-span-3"
               />
             </div>
+
             {/* Language */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="lang" className="text-center">
+              <Label htmlFor="item-language" className="text-center">
                 Language
               </Label>
               <Input
-                id="lang"
-                value={lang}
+                id="item-language"
+                value={feedItemLanguage}
                 placeholder="uz / en / ru"
-                onChange={(e) => setLang(e.target.value)}
+                onChange={(e) => setFeedItemLanguage(e.target.value)}
                 className="col-span-3"
               />
             </div>
+
             {/* Link */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="link" className="text-center">
+              <Label htmlFor="item-link" className="text-center">
                 Item Link
               </Label>
               <Input
-                id="link"
-                value={link}
+                id="item-link"
+                value={feedItemlink}
                 placeholder="https://example.com/item"
-                onChange={(e) => setLink(e.target.value)}
+                onChange={(e) => setFeedItemLink(e.target.value)}
                 className="col-span-3"
               />
             </div>
+
             {/* Published At */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="published-at" className="text-center">
@@ -171,74 +177,79 @@ export const CreateFeedItem = () => {
               </Label>
               <Input
                 id="published-at"
-                value={publishedAt}
+                value={feedItemPublishedAt}
                 placeholder="Wed, 24 Feb 2016 11:42:23 EST"
-                onChange={(e) => setPublishedAt(e.target.value)}
+                onChange={(e) => setFeedItemPublishedAt(e.target.value)}
                 className="col-span-3"
               />
             </div>
+
             {/* Source URL */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="source-url" className="text-center">
-                Source URL
+                Source Feed URL
               </Label>
               <Input
                 id="source-url"
-                value={sourceUrl}
+                value={feedSourceUrl}
                 placeholder="https://news.com"
-                onChange={(e) => setSourceUrl(e.target.value)}
+                onChange={(e) => setFeedSourceUrl(e.target.value)}
                 className="col-span-3"
               />
             </div>
+
             {/* Source Title */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="source-title" className="text-center">
-                Source Title
+                Source Feed Title
               </Label>
               <Input
                 id="source-title"
-                value={sourceTitle}
+                value={feedSourceTitle}
                 placeholder="News / BBC / Kun.uz"
-                onChange={(e) => setSourceTitle(e.target.value)}
+                onChange={(e) => setFeedSourceTitle(e.target.value)}
                 className="col-span-3"
               />
             </div>
+
             {/* Thumbnail Alt Text */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="alt-text" className="text-center">
+              <Label htmlFor="thumbnail-alt-text" className="text-center">
                 Thumbnail Alt Text
               </Label>
               <Input
-                id="alt-text"
-                value={thumbnailAltText}
-                placeholder="Image Description"
-                onChange={(e) => setThumbnailAltText(e.target.value)}
+                id="thumbnail-alt-text"
+                value={feedItemThumbnailAltText}
+                placeholder="Short Thumbnail Description"
+                onChange={(e) => setFeedItemThumbnailAltText(e.target.value)}
                 className="col-span-3"
               />
             </div>
+
             {/* Thumbnail Source */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="img-src" className="text-center">
+              <Label htmlFor="thumbnail-src" className="text-center">
                 Thumbnail Source
               </Label>
               <Input
-                id="img-src"
-                value={thumbnailDldUrl}
+                id="thumbnail-src"
+                value={feedItemThumbnailDldUrl}
                 placeholder="https://example.com/item-thumbnail.png"
-                onChange={(e) => setThumbnailDldUrl(e.target.value)}
+                onChange={(e) => setFeedItemThumbnailDldUrl(e.target.value)}
                 className="col-span-3"
               />
             </div>
+
             {/* Title */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="title" className="text-center">
+              <Label htmlFor="item-title" className="text-center">
                 Title
               </Label>
               <Input
-                id="title"
-                value={title}
+                id="item-title"
+                value={feedItemtitle}
                 placeholder="Example Title"
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setFeedItemTitle(e.target.value)}
                 className="col-span-3"
               />
             </div>
@@ -246,15 +257,15 @@ export const CreateFeedItem = () => {
 
           <DialogFooter className="mt-4">
             <Button
-              className="cursor-pointer w-[40%]"
+              className="cursor-pointer w-full"
               variant="default"
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? "Adding..." : "Add Feed Item"}
+              {isLoading ? "Adding..." : "Add"}
             </Button>
             <Button
-              className="cursor-pointer w-[40%]"
+              className="cursor-pointer w-full"
               variant="destructive"
               type="reset"
               onClick={() => setShowModal(false)}
