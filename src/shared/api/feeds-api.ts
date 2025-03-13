@@ -4,6 +4,7 @@ import {
   IPostFeed,
   IGetFeedsParams,
 } from "@/shared/model/feeds";
+import { IAllFeedItemsResponse } from "@/shared/model/feed-items";
 
 export const feedsApi = createApi({
   reducerPath: "feedsApi",
@@ -40,6 +41,10 @@ export const feedsApi = createApi({
         response.feeds,
       providesTags: ["Feed"],
     }),
+    refreshFeedItemsByFeedId: builder.query<IAllFeedItemsResponse, number>({
+      query: (id) => `/v1/admin/feeds/feed/refresh/${id}`,
+      providesTags: ["Feed"],
+    }),
     getFeedById: builder.query<IFeedResponse, number>({
       query: (id) => `/v1/admin/feeds/feed/${id}`,
       providesTags: (result, error, id) => [{ type: "Feed", id }],
@@ -66,9 +71,10 @@ export const feedsApi = createApi({
 });
 
 export const {
-  useGetAllFeedsQuery,
-  useGetFeedByIdQuery,
   useCreateFeedMutation,
+  useGetAllFeedsQuery,
+  useLazyRefreshFeedItemsByFeedIdQuery,
+  useGetFeedByIdQuery,
   useUpdateFeedMutation,
   useDeleteFeedMutation,
 } = feedsApi;
