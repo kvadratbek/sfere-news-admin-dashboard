@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IFeedItem,
+  IMutateFeedItem,
   IGetAllFeedItemsParams,
   IAllFeedItemsResponse,
   IGetItemsByFeedParams,
@@ -24,7 +25,7 @@ export const feedItemsApi = createApi({
   }),
   tagTypes: ["Feed-Item"],
   endpoints: (builder) => ({
-    createFeedItem: builder.mutation<IFeedItem, IFeedItem>({
+    createFeedItem: builder.mutation<IFeedItem, IMutateFeedItem>({
       query: (item) => ({
         url: "/v1/admin/feeds/items/",
         method: "POST",
@@ -71,7 +72,7 @@ export const feedItemsApi = createApi({
     }),
     updateFeedItem: builder.mutation<
       IFeedItem,
-      { id: number; item: IFeedItem }
+      { id: number; item: IMutateFeedItem }
     >({
       query: ({ id, item }) => ({
         url: `/v1/admin/feeds/items/${id}`,
