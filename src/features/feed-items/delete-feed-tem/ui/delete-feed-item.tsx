@@ -2,6 +2,7 @@ import { toast } from "sonner";
 import { Button } from "@/shared/ui/button";
 import { useDeleteFeedItemMutation } from "@/shared/api/feed-items-api";
 import { IDeleteFeedItem } from "../model/types";
+import { Trash } from "lucide-react";
 
 export const DeleteFeedItem = ({ deleteFeedItemId }: IDeleteFeedItem) => {
   const [deleteFeedItem, { isLoading }] = useDeleteFeedItemMutation();
@@ -21,12 +22,12 @@ export const DeleteFeedItem = ({ deleteFeedItemId }: IDeleteFeedItem) => {
 
   return (
     <Button
-      className="cursor-pointer min-w-[85px]"
+      className="cursor-pointer"
       variant="destructive"
       onClick={() => handleDelete(deleteFeedItemId)}
       disabled={isLoading}
     >
-      {isLoading ? "Deleting" : "Delete"}
+      <Trash />
     </Button>
   );
 };

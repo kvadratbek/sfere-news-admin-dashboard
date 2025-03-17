@@ -16,6 +16,7 @@ import { Button } from "@/shared/ui/button";
 import { LoadingSkeleton } from "./loading-skeleton";
 import { ItemsHeader } from "./items-header";
 import { ItemsFooter } from "./items-footer";
+import { DeleteFeedItem } from "@/features/feed-items/delete-feed-tem/ui/delete-feed-item";
 
 const ControlBar = memo(
   ({
@@ -165,7 +166,9 @@ export const FeedItemsList = () => {
                 key={item.id}
                 feedItem={item}
                 updateFeature={<UpdateFeedItem updateFeedItemId={item.id} />}
-                deleteFeature={<Button variant="destructive">Delete</Button>}
+                deleteFeature={
+                  <DeleteFeedItem deleteFeedItemId={String(item.id)} />
+                }
               />
             ))}
           </TableBody>

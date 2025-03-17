@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Rss } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { IViewContacts } from "../model";
 
@@ -15,7 +16,7 @@ export const ViewContents = ({ feedId }: IViewContacts) => {
       variant="secondary"
       onClick={handleViewContents}
     >
-      Contents
+      <Rss />
     </Button>
   );
 };

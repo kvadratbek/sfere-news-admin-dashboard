@@ -6,6 +6,7 @@ import { IFeedProps } from "../model";
 
 export const Feed = ({
   feed,
+  refreshFeature,
   viewContentsFeature,
   deleteFeature,
   updateFeature,
@@ -38,6 +39,7 @@ export const Feed = ({
           {prioritizedTranslation?.description ?? "No description"}
         </span>
       </TableCell>
+      <TableCell>{refreshFeature}</TableCell>
       <TableCell>{viewContentsFeature}</TableCell>
       <TableCell>{updateFeature}</TableCell>
       <TableCell>{deleteFeature}</TableCell>

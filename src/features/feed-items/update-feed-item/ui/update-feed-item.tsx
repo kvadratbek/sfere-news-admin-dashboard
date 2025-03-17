@@ -18,6 +18,7 @@ import {
 } from "@/shared/api/feed-items-api";
 import { IUpdateFeedItem } from "../model/types";
 import { Textarea } from "@/shared/ui/textarea";
+import { Pencil } from "lucide-react";
 
 export const UpdateFeedItem = ({ updateFeedItemId }: IUpdateFeedItem) => {
   const { data: feedItemData, isLoading: isFetching } =
@@ -107,11 +108,11 @@ export const UpdateFeedItem = ({ updateFeedItemId }: IUpdateFeedItem) => {
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger asChild>
         <Button
-          className="cursor-pointer min-w-[85px]"
+          className="cursor-pointer"
           variant="default"
           disabled={isFetching}
         >
-          {isFetching ? "Loading..." : "Update"}
+          <Pencil />
         </Button>
       </DialogTrigger>
       <DialogContent className="scrollable sm:max-w-[425px] sm:max-h-[550px] overflow-scroll">

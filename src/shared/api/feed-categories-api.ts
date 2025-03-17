@@ -76,7 +76,7 @@ export const {
   useCreateCategoryMutation,
   useGetAllCategoriesQuery,
   useServeCategoryIconQuery,
-  useGetCategoryByIdQuery,
+  useLazyGetCategoryByIdQuery,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
 } = feedCategoriesApi;

@@ -14,10 +14,11 @@ import {
 import { FeedCategory, QueryFilter } from "@/entities";
 import { AppPagination, QueryLanguage, QueryLimit } from "@/features";
 import {
-  UpdateFeedCategory,
+  // UpdateFeedCategory,
   DeleteFeedCategory,
   CreateFeedCategory,
 } from "@/features/feed-categories";
+import { UpdateFeedCategory } from "@/features/feed-categories-test";
 import { useGetAllCategoriesQuery } from "@/shared/api/feed-categories-api";
 
 export const FeedCategoriesList = () => {
@@ -45,7 +46,6 @@ export const FeedCategoriesList = () => {
                 <TableHead>Lang</TableHead>
                 <TableHead>Icon</TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -100,7 +100,6 @@ export const FeedCategoriesList = () => {
               <TableHead>Lang</TableHead>
               <TableHead>Icon</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

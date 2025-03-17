@@ -1,7 +1,7 @@
 import { Button } from "@/shared/ui/button";
 import { RefreshCcw } from "lucide-react";
 import { useLazyRefreshFeedItemsByFeedIdQuery } from "@/shared/api/feeds-api";
-import { IRefreshFeedItems } from "../model/types";
+import { IRefreshFeedItems } from "../model";
 
 export const RefreshFeedItems = ({ id }: IRefreshFeedItems) => {
   const [refresh, { isFetching }] = useLazyRefreshFeedItemsByFeedIdQuery();

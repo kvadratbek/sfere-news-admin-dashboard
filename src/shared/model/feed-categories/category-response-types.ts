@@ -1,7 +1,7 @@
 interface ICategoryResponse {
   icon_id: string;
   icon_url: string;
-  id: 0;
+  id: number;
   translations: ITranslations[];
 }
 
@@ -10,4 +10,4 @@ interface ITranslations {
   name: string;
 }
 
-export type { ICategoryResponse };
+export type { ICategoryResponse, ITranslations };

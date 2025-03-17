@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  useGetFeedByIdQuery,
-  useUpdateFeedMutation,
-} from "@/shared/api/feeds-api";
-import { Button } from "@/shared/ui/button";
+import { toast } from "sonner";
+import { Pencil } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,10 +10,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/ui/dialog";
+import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { Textarea } from "@/shared/ui/textarea";
-import { toast } from "sonner";
+import {
+  useGetFeedByIdQuery,
+  useUpdateFeedMutation,
+} from "@/shared/api/feeds-api";
 import { IUpdateFeed } from "../model";
 
 export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
@@ -100,11 +101,11 @@ export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger asChild>
         <Button
-          className="cursor-pointer min-w-[85px]"
+          className="cursor-pointer"
           variant="default"
           disabled={isFetching}
         >
-          Update
+          <Pencil />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] sm:max-h-[550px] overflow-scroll">

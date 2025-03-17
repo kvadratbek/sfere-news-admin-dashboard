@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/shared/ui/dialog";
 import { Collapsible, CollapsibleTrigger } from "@/shared/ui/collapsible";
 import { Button } from "@/shared/ui/button";
 import { IFeedItemEntity } from "../model";
+import { ImagePlay } from "lucide-react";
 
 export const FeedItem = ({
   feedItem,
@@ -74,7 +75,7 @@ export const FeedItem = ({
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="secondary" className="cursor-pointer">
-              Thumbnail
+              <ImagePlay />
             </Button>
           </DialogTrigger>
           <DialogContent>

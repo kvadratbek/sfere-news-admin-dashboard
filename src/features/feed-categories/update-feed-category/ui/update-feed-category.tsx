@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {
-  useGetCategoryByIdQuery,
+  useLazyGetCategoryByIdQuery,
   useUpdateCategoryMutation,
 } from "@/shared/api/feed-categories-api";
 import { Button } from "@/shared/ui/button";
@@ -19,8 +19,8 @@ import { toast } from "sonner";
 import { IUpdateCategory } from "../model";
 
 export const UpdateFeedCategory = ({ updateCategoryId }: IUpdateCategory) => {
-  const { data: categoryData, isLoading: isFetching } =
-    useGetCategoryByIdQuery(updateCategoryId);
+  const [trigger, { data: categoryData, isLoading: isFetching }] =
+    useLazyGetCategoryByIdQuery();
   const [updateCategory, { isLoading: isUpdating }] =
     useUpdateCategoryMutation();
 
@@ -29,12 +29,19 @@ export const UpdateFeedCategory = ({ updateCategoryId }: IUpdateCategory) => {
   const [translations, setTranslations] = useState([{ lang: "", name: "" }]);
   const [showModal, setShowModal] = useState(false);
 
-  // Populate form with existing data when feedData is available
+  // Fetch category data when modal opens
+  useEffect(() => {
+    if (showModal && updateCategoryId) {
+      trigger(updateCategoryId);
+    }
+  }, [showModal, updateCategoryId, trigger]);
+
+  // Populate form with existing data when categoryData is available
   useEffect(() => {
     if (categoryData) {
       setIconId(categoryData.icon_id);
       setIconUrl(categoryData.icon_url);
-      setTranslations(categoryData.translations || []);
+      setTranslations(categoryData.translations || [{ lang: "", name: "" }]);
     }
   }, [categoryData]);
 
@@ -90,11 +97,7 @@ export const UpdateFeedCategory = ({ updateCategoryId }: IUpdateCategory) => {
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger asChild>
-        <Button
-          className="cursor-pointer min-w-[85px]"
-          variant="default"
-          disabled={isFetching}
-        >
+        <Button className="cursor-pointer min-w-[85px]" variant="default">
           Update
         </Button>
       </DialogTrigger>

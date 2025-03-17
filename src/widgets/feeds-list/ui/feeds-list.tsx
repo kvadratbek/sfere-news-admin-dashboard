@@ -20,11 +20,13 @@ import {
 } from "@/features";
 import {
   CreateFeed,
+  RefreshFeedItems,
   ViewContents,
   UpdateFeed,
   DeleteFeed,
 } from "@/features/feeds";
 import { useGetAllFeedsQuery } from "@/shared/api/feeds-api";
+// import { RefreshFeedItems } from "@/features/feeds/refresh-feed-items/ui/resfresh-feed-items";
 
 export const FeedsList = () => {
   const selectedLanguage = useSelector(
@@ -98,7 +100,7 @@ export const FeedsList = () => {
           <QueryLimit
             labelText="Feeds per Page"
             limitValue={queryLimit}
-            limitOnChange={(e) => setQueryLimit(Number(e.target.value))}
+            limitOnChange={(e) => setQueryLimit(e.target.value)}
           />
           <QueryPriority
             onPriorityChange={() =>
@@ -111,7 +113,7 @@ export const FeedsList = () => {
         <CreateFeed />
       </div>
       <div className="w-full max-w-full overflow-x-auto rounded-xl bg-muted/50 p-4">
-        <Table className="min-w-full">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
@@ -120,9 +122,10 @@ export const FeedsList = () => {
               <TableHead>Logo</TableHead>
               <TableHead>Title</TableHead>
               <TableHead>Description</TableHead>
+              {/* <TableHead>Refresh</TableHead>
               <TableHead>View Contents</TableHead>
               <TableHead>Edit</TableHead>
-              <TableHead>Delete</TableHead>
+              <TableHead>Delete</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -131,6 +134,7 @@ export const FeedsList = () => {
                 key={feed.id}
                 feed={feed}
                 viewContentsFeature={<ViewContents feedId={feed.id} />}
+                refreshFeature={<RefreshFeedItems id={feed.id} />}
                 updateFeature={<UpdateFeed updateFeedId={feed.id} />}
                 deleteFeature={<DeleteFeed deleteFeedId={feed.id} />}
               />
