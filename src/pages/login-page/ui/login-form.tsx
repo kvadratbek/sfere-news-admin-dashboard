@@ -7,12 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/ui/card";
+import { ENVIRONMENT_VARIABLES } from "@/shared/constants";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const REDIRECT_URL = import.meta.env.VITE_PRO_ID_REDIRECT_URL;
+  const REDIRECT_URL = ENVIRONMENT_VARIABLES.PRO_ID_REDIRECT_URL;
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault(); // Prevent form submission from interfering
     console.log("Redirecting to:", REDIRECT_URL); // Debug

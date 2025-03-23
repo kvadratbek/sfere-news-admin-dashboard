@@ -6,6 +6,7 @@ import {
   IAllFeedItemsResponse,
   IGetItemsByFeedParams,
 } from "../model/feed-items";
+import { ENVIRONMENT_VARIABLES } from "@/shared/constants";
 
 export const feedItemsApi = createApi({
   reducerPath: "feedItemsApi",
@@ -15,7 +16,7 @@ export const feedItemsApi = createApi({
       headers.set("Accept", "application/json");
       headers.set("Content-Type", "application/json");
 
-      const apiKey = import.meta.env.VITE_API_KEY;
+      const apiKey = ENVIRONMENT_VARIABLES.API_KEY;
       if (apiKey) {
         headers.set("Authorization", `Bearer ${apiKey}`);
       }
