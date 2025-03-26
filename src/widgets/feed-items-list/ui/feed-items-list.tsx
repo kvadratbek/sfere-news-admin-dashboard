@@ -12,7 +12,6 @@ import {
 import { CreateFeedItem, UpdateFeedItem } from "@/features/feed-items";
 import { FeedItem, QueryFilter } from "@/entities";
 import { Table, TableBody } from "@/shared/ui/table";
-import { Button } from "@/shared/ui/button";
 import { LoadingSkeleton } from "./loading-skeleton";
 import { ItemsHeader } from "./items-header";
 import { ItemsFooter } from "./items-footer";
