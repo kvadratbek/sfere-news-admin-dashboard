@@ -1,5 +1,5 @@
 interface IGetCategoriesParams {
-  limit: number;
+  limit: number | undefined;
   page: number;
   lang: string;
 }
