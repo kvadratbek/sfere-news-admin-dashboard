@@ -131,7 +131,7 @@ export const FeedContentsList = () => {
         <QueryFilter>
           <QueryId
             labelText="Category ID"
-            id={categoryId || ""}
+            id={categoryId}
             placeholder="ID number"
             onIdChange={(e) => setCategoryId(e.target.value || undefined)}
           />

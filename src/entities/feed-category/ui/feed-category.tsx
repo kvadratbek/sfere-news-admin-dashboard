@@ -21,11 +21,11 @@ export const FeedCategory = ({
       <TableCell>{category.id ?? "No Data"}</TableCell>
       <TableCell>{prioritizedTranslation?.lang ?? "No Data"}</TableCell>
       <TableCell>
-        <img src={category.icon_url} alt="Icon" width={40} height={40} />
+        <img src={category.icon_url} alt="Icon" width={32} height={32} />
       </TableCell>
       <TableCell>{prioritizedTranslation?.name ?? "No Data"}</TableCell>
       <TableCell className="flex flex-row-reverse gap-5" align="right">
-        {deleteFeature} {updateFeature}
+        {updateFeature} {deleteFeature}
       </TableCell>
     </TableRow>
   );

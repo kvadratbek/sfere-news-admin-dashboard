@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/shared/ui/select";
 import { Label } from "@/shared/ui/label";
+import { cn } from "@/shared/lib";
 
 const languageOptions: { code: string; name: string }[] = [
   { code: "uz", name: "Uzbek" },
@@ -34,7 +35,9 @@ export const QueryLanguage = () => {
       </Label>
       <Select onValueChange={handleLanguageChange} value={selectedLanguage}>
         <SelectTrigger
-          className="text-center inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 focus-visible:ring-4 focus-visible:outline-1 aria-invalid:focus-visible:ring-0 border border-input shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 has-[>svg]:px-3 cursor-pointer bg-transparent"
+          className={cn(
+            "text-center inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 focus-visible:ring-4 focus-visible:outline-1 aria-invalid:focus-visible:ring-0 border border-input shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 has-[>svg]:px-3 cursor-pointer bg-transparent"
+          )}
           id="language-selector"
         >
           <SelectValue placeholder="Select Language" />
@@ -45,7 +48,7 @@ export const QueryLanguage = () => {
               <SelectItem
                 key={lang.code}
                 value={lang.code}
-                className="cursor-pointer"
+                className="cursor-pointer flex justify-between"
               >
                 {lang.name}
               </SelectItem>
