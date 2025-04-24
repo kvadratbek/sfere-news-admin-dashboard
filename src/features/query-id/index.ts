@@ -1,3 +1,3 @@
-import { QueryId } from "./ui";
+import { QuerySelect } from "./ui";
 
-export { QueryId };
+export { QuerySelect };

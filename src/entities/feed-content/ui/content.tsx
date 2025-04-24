@@ -9,8 +9,15 @@ export const FeedContent = ({
   return (
     <TableRow key={content.id}>
       <TableCell>{content.id ?? "No Data"}</TableCell>
-      <TableCell>{content.feed_id ?? "No Data"}</TableCell>
-      <TableCell>{content.category_id ?? "No Data"}</TableCell>
+      <TableCell>
+        {content.feed_name ?? "No Data"} | ID: {content.feed_id ?? "No Data"}
+      </TableCell>
+      {/* <TableCell>{content.feed_id ?? "No Data"}</TableCell> */}
+      <TableCell>
+        {content.category_name ?? "No Data"} | ID:{" "}
+        {content.category_id ?? "No Data"}
+      </TableCell>
+      {/* <TableCell>{content.category_id ?? "No Data"}</TableCell> */}
       <TableCell>{content.lang ?? "No Data"}</TableCell>
       <TableCell>{content.link ?? "No Data"}</TableCell>
       <TableCell className="flex flex-row-reverse gap-5" align="right">

@@ -1,10 +1,11 @@
 const TABLE_HEADERS = [
   "ID",
-  "Feed ID",
-  "Category ID",
+  "Feed",
+  // "Feed ID",
+  "Category",
+  // "Category ID",
   "Language",
   "Link",
-  "Action",
 ];
 
 export { TABLE_HEADERS };

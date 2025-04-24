@@ -16,6 +16,7 @@ import {
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { toast } from "sonner";
+import { Pencil } from "lucide-react";
 import { IUpdateCategory } from "../model";
 
 export const UpdateFeedCategory = ({ updateCategoryId }: IUpdateCategory) => {
@@ -97,8 +98,12 @@ export const UpdateFeedCategory = ({ updateCategoryId }: IUpdateCategory) => {
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger asChild>
-        <Button className="cursor-pointer min-w-[85px]" variant="default">
-          Update
+        <Button
+          className="cursor-pointer"
+          variant="default"
+          disabled={isFetching}
+        >
+          <Pencil />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] sm:max-h-[550px] overflow-scroll">

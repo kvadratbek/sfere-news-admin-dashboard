@@ -6,7 +6,6 @@ import {
   IAllFeedItemsResponse,
   IGetItemsByFeedParams,
 } from "../model/feed-items";
-import { ENVIRONMENT_VARIABLES } from "@/shared/constants";
 
 export const feedItemsApi = createApi({
   reducerPath: "feedItemsApi",
@@ -16,7 +15,7 @@ export const feedItemsApi = createApi({
       headers.set("Accept", "application/json");
       headers.set("Content-Type", "application/json");
 
-      const apiKey = ENVIRONMENT_VARIABLES.API_KEY;
+      const apiKey = import.meta.env.VITE_API_KEY;
       if (apiKey) {
         headers.set("Authorization", `Bearer ${apiKey}`);
       }
@@ -69,7 +68,7 @@ export const feedItemsApi = createApi({
     }),
     getFeedItemById: builder.query<IFeedItem, number>({
       query: (id) => `/v1/admin/feeds/items/${id}`,
-      providesTags: (result, error, id) => [{ type: "Feed-Item", id }],
+      providesTags: ["Feed-Item"],
     }),
     updateFeedItem: builder.mutation<
       IFeedItem,
@@ -96,7 +95,7 @@ export const {
   useCreateFeedItemMutation,
   useGetAllFeedItemsQuery,
   useGetAllItemsByFeedQuery,
-  useGetFeedItemByIdQuery,
+  useLazyGetFeedItemByIdQuery,
   useUpdateFeedItemMutation,
   useDeleteFeedItemMutation,
 } = feedItemsApi;

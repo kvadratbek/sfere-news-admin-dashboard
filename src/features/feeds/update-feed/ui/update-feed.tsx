@@ -11,88 +11,104 @@ import {
   DialogTrigger,
 } from "@/shared/ui/dialog";
 import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
-import { Label } from "@/shared/ui/label";
-import { Textarea } from "@/shared/ui/textarea";
+import { InputBlock } from "./input-block";
+import { TextareaBlock } from "./text-area-block";
 import {
-  useGetFeedByIdQuery,
+  useLazyGetFeedByIdQuery,
   useUpdateFeedMutation,
 } from "@/shared/api/feeds-api";
 import { IUpdateFeed } from "../model";
 
+const emptyTranslation = (feed_id: number) => ({
+  id: 0,
+  feed_id,
+  lang: "",
+  title: "",
+  description: "",
+});
+
 export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
-  const { data: feedData, isLoading: isFetching } =
-    useGetFeedByIdQuery(updateFeedId);
+  const [trigger, { data: feedData, isLoading: isFetching }] =
+    useLazyGetFeedByIdQuery();
   const [updateFeed, { isLoading: isUpdating }] = useUpdateFeedMutation();
 
-  const [baseUrl, setBaseUrl] = useState("");
-  const [logoUrl, setLogoUrl] = useState("");
-  const [priority, setPriority] = useState(0);
-  const [translations, setTranslations] = useState([
-    { id: 0, feed_id: 0, lang: "", title: "", description: "" },
-  ]);
+  const [form, setForm] = useState({
+    baseUrl: "",
+    logoUrl: "",
+    priority: 0,
+    translations: [emptyTranslation(updateFeedId)],
+  });
+
   const [showModal, setShowModal] = useState(false);
 
-  // Populate form with existing data when feedData is available
+  // Load feed data when modal opens
+  useEffect(() => {
+    if (showModal) {
+      trigger(updateFeedId);
+    }
+  }, [showModal, updateFeedId, trigger]);
+
+  // Populate form when feedData is fetched
   useEffect(() => {
     if (feedData) {
-      setBaseUrl(feedData.base_url);
-      setLogoUrl(feedData.logo_url);
-      setPriority(feedData.priority);
-      setTranslations(feedData.translation || []);
+      setForm({
+        baseUrl: feedData.base_url,
+        logoUrl: feedData.logo_url,
+        priority: feedData.priority,
+        translations: feedData.translation?.length
+          ? feedData.translation
+          : [emptyTranslation(updateFeedId)],
+      });
     }
   }, [feedData]);
 
-  // Add a new translation block
-  const handleAddTranslation = () => {
-    setTranslations([
-      ...translations,
-      { id: 0, feed_id: updateFeedId, lang: "", title: "", description: "" },
-    ]);
-  };
-
-  // Remove a translation block by index
-  const handleRemoveTranslation = (index: number) => {
-    if (translations.length > 1) {
-      setTranslations(translations.filter((_, i) => i !== index));
-    }
-  };
-
-  // Update translation values
   const handleTranslationChange = (
     index: number,
     field: string,
     value: string
   ) => {
-    const updatedTranslations = [...translations];
-    updatedTranslations[index] = {
-      ...updatedTranslations[index],
-      [field]: value,
-    };
-    setTranslations(updatedTranslations);
+    const updated = [...form.translations];
+    updated[index] = { ...updated[index], [field]: value };
+    setForm({ ...form, translations: updated });
+  };
+
+  const addTranslation = () => {
+    setForm((prev) => ({
+      ...prev,
+      translations: [...prev.translations, emptyTranslation(updateFeedId)],
+    }));
+  };
+
+  const removeTranslation = (index: number) => {
+    if (form.translations.length > 1) {
+      setForm((prev) => ({
+        ...prev,
+        translations: prev.translations.filter((_, i) => i !== index),
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const feed = {
+    const payload = {
       id: updateFeedId,
-      base_url: baseUrl,
-      logo_url: logoUrl,
-      max_items: 0, // Ensure this field is correct
-      priority,
-      translation: translations,
+      base_url: form.baseUrl,
+      logo_url: form.logoUrl,
+      priority: form.priority,
+      max_items: 0, // <- confirm this is correct
+      translation: form.translations,
     };
 
     try {
-      await updateFeed({ id: updateFeedId, feed }).unwrap();
+      await updateFeed({ id: updateFeedId, feed: payload }).unwrap();
       toast.success("Feed updated successfully!", {
         description: `Feed (ID: ${updateFeedId}) has been updated.`,
       });
       setShowModal(false);
-    } catch (error: unknown) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       toast.error("Failed to update feed.", {
-        description: error instanceof Error ? error.message : "Unknown error",
+        description: error?.message ?? "Unknown error",
       });
     }
   };
@@ -108,6 +124,7 @@ export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
           <Pencil />
         </Button>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-[425px] sm:max-h-[550px] overflow-scroll">
         <DialogHeader>
           <DialogTitle>Update Feed</DialogTitle>
@@ -115,144 +132,95 @@ export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
             Complete the form to update an existing Feed
           </DialogDescription>
         </DialogHeader>
+
         {isFetching ? (
           <p>Loading...</p>
         ) : (
           <form onSubmit={handleSubmit}>
+            {/* Base Fields */}
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="baseUrl" className="text-center">
-                  Base URL
-                </Label>
-                <Input
-                  id="baseUrl"
-                  value={baseUrl}
-                  placeholder="https://example.com"
-                  onChange={(e) => setBaseUrl(e.target.value)}
-                  className="col-span-3"
-                  required
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="logoUrl" className="text-center">
-                  Logo URL
-                </Label>
-                <Input
-                  id="logoUrl"
-                  value={logoUrl}
-                  placeholder="https://example.com/logo.png"
-                  onChange={(e) => setLogoUrl(e.target.value)}
-                  className="col-span-3"
-                  required
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="priority" className="text-center">
-                  Priority
-                </Label>
-                <Input
-                  id="priority"
-                  type="number"
-                  value={priority}
-                  onChange={(e) => setPriority(Number(e.target.value))}
-                  className="col-span-3"
-                  required
-                />
-              </div>
+              <InputBlock
+                id="baseUrl"
+                label="Base URL"
+                value={form.baseUrl}
+                onChange={(v) => setForm((f) => ({ ...f, baseUrl: v }))}
+              />
+              <InputBlock
+                id="logoUrl"
+                label="Logo URL"
+                value={form.logoUrl}
+                onChange={(v) => setForm((f) => ({ ...f, logoUrl: v }))}
+              />
+              <InputBlock
+                id="priority"
+                label="Priority"
+                type="number"
+                value={form.priority}
+                onChange={(v) =>
+                  setForm((f) => ({ ...f, priority: Number(v) }))
+                }
+              />
             </div>
 
-            {/* Dynamic Translation Inputs */}
-            {translations.map((translation, index) => (
-              <div key={index} className="grid gap-4 py-4 pt-4 relative">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor={`lang-${index}`} className="text-center">
-                    Language
-                  </Label>
-                  <Input
-                    id={`lang-${index}`}
-                    placeholder="en / uz / ru / ..."
-                    value={translation.lang}
-                    onChange={(e) =>
-                      handleTranslationChange(index, "lang", e.target.value)
-                    }
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor={`title-${index}`} className="text-center">
-                    Title
-                  </Label>
-                  <Input
-                    id={`title-${index}`}
-                    placeholder="Example Feed"
-                    value={translation.title}
-                    onChange={(e) =>
-                      handleTranslationChange(index, "title", e.target.value)
-                    }
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label
-                    htmlFor={`description-${index}`}
-                    className="text-center"
-                  >
-                    Description
-                  </Label>
-                  <Textarea
-                    id={`description-${index}`}
-                    placeholder="Description..."
-                    value={translation.description}
-                    onChange={(e) =>
-                      handleTranslationChange(
-                        index,
-                        "description",
-                        e.target.value
-                      )
-                    }
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-
-                {/* Remove Button */}
-                {translations.length > 1 && (
+            {/* Translations */}
+            {form.translations.map((tr, index) => (
+              <div key={index} className="grid gap-4 py-4 border-t pt-4">
+                <InputBlock
+                  id={`lang-${index}`}
+                  label="Language"
+                  value={tr.lang}
+                  onChange={(v) => handleTranslationChange(index, "lang", v)}
+                />
+                <InputBlock
+                  id={`title-${index}`}
+                  label="Title"
+                  value={tr.title}
+                  onChange={(v) => handleTranslationChange(index, "title", v)}
+                />
+                <TextareaBlock
+                  id={`description-${index}`}
+                  label="Description"
+                  value={tr.description}
+                  onChange={(v) =>
+                    handleTranslationChange(index, "description", v)
+                  }
+                />
+                {form.translations.length > 1 && (
                   <Button
-                    className="cursor-pointer"
+                    className="w-full cursor-pointer"
                     type="button"
                     variant="destructive"
-                    onClick={() => handleRemoveTranslation(index)}
+                    onClick={() => removeTranslation(index)}
                   >
-                    Remove Translation Block
+                    Remove Translation
                   </Button>
                 )}
               </div>
             ))}
 
-            <DialogFooter className="mt-4">
+            <DialogFooter className="mt-4 flex gap-2">
               <Button
-                className="cursor-pointer w-full"
-                variant="secondary"
+                className="w-full cursor-pointer"
                 type="button"
-                onClick={handleAddTranslation}
+                variant="secondary"
+                onClick={addTranslation}
                 disabled={isUpdating}
               >
                 + Translation
               </Button>
               <Button
-                className="cursor-pointer w-full"
-                variant="default"
+                className="w-full cursor-pointer"
                 type="submit"
+                variant="default"
                 disabled={isUpdating}
               >
-                {isUpdating ? "Updating..." : "Update"}
+                {isUpdating ? "Updating..." : "Update Feed"}
               </Button>
               <Button
-                className="cursor-pointer w-full"
+                className="w-full cursor-pointer"
+                type="button"
                 variant="destructive"
-                type="reset"
+                disabled={isUpdating}
                 onClick={() => setShowModal(false)}
               >
                 Cancel

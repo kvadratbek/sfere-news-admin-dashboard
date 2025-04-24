@@ -1,13 +1,9 @@
-// import { HTMLInputTypeAttribute } from "react";
-
-interface IQueryId {
+interface IQuerySelect {
   labelText: string;
   elementId: string;
-  // inputType: HTMLInputTypeAttribute;
-  id: number | undefined;
+  id: number | string | undefined;
   placeholder: string;
   onIdChange: (value: number | undefined) => void;
-  // onIdChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export type { IQueryId };
+export type { IQuerySelect };

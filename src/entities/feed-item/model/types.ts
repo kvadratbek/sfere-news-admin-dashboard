@@ -1,9 +1,10 @@
+import React from "react";
 import { IFeedItem } from "@/shared/model/feed-items";
 
 interface IFeedItemEntity {
   feedItem: IFeedItem;
-  updateFeature: JSX.Element;
-  deleteFeature: JSX.Element;
+  updateFeature: React.JSX.Element;
+  deleteFeature: React.JSX.Element;
 }
 
 export type { IFeedItemEntity };

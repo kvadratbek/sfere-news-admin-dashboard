@@ -4,7 +4,7 @@ import { RootState } from "@/app/store";
 import { useGetAllFeedItemsQuery } from "@/shared/api/feed-items-api";
 import {
   AppPagination,
-  QueryId,
+  // QueryId,
   QueryLanguage,
   QueryLimit,
   QuerySort,
@@ -21,10 +21,10 @@ const ControlBar = memo(
   ({
     queryLimit,
     setQueryLimit,
-    queryFeedId,
-    setQueryFeedId,
-    queryFeedCategoryId,
-    setQueryFeedCategoryId,
+    // queryFeedId,
+    // setQueryFeedId,
+    // queryFeedCategoryId,
+    // setQueryFeedCategoryId,
     querySort,
     setQuerySort,
   }: {
@@ -46,7 +46,7 @@ const ControlBar = memo(
             limitOnChange={setQueryLimit}
           />
           <QueryLanguage />
-          <QueryId
+          {/* <QueryId
             elementId="feed-id-query"
             labelText="Filter by Feed"
             placeholder="Feed ID"
@@ -59,7 +59,7 @@ const ControlBar = memo(
             placeholder="Category ID"
             id={queryFeedCategoryId}
             onIdChange={setQueryFeedCategoryId}
-          />
+          /> */}
           <QuerySort
             labelText="Sort By"
             selectedOption={querySort}
@@ -97,53 +97,6 @@ export const FeedItemsList = () => {
   const totalPages = Math.ceil(totalItems / (queryLimit ?? 15));
   const items = data?.items;
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-1 flex-col gap-4 p-4">
-        <ControlBar
-          queryLimit={queryLimit}
-          setQueryLimit={setQueryLimit}
-          queryFeedId={queryFeedId}
-          setQueryFeedId={setQueryFeedId}
-          queryFeedCategoryId={queryFeedCategoryId}
-          setQueryFeedCategoryId={setQueryFeedCategoryId}
-          querySort={querySort}
-          setQuerySort={setQuerySort}
-        />
-        <div className="rounded-xl bg-muted/50 p-4">
-          <Table>
-            <ItemsHeader />
-            <TableBody>
-              {Array.from({ length: queryLimit || 15 }).map((_, index) => (
-                <LoadingSkeleton key={index} />
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-1 flex-col gap-4 p-4">
-        <ControlBar
-          queryLimit={queryLimit}
-          setQueryLimit={setQueryLimit}
-          queryFeedId={queryFeedId}
-          setQueryFeedId={setQueryFeedId}
-          queryFeedCategoryId={queryFeedCategoryId}
-          setQueryFeedCategoryId={setQueryFeedCategoryId}
-          querySort={querySort}
-          setQuerySort={setQuerySort}
-        />
-        <div className="text-center rounded-xl bg-muted/50 p-4">
-          ❌ Error fetching Feed Items. Please try again
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
       <ControlBar
@@ -156,32 +109,49 @@ export const FeedItemsList = () => {
         querySort={querySort}
         setQuerySort={setQuerySort}
       />
-      <div className="w-full max-w-full overflow-x-auto rounded-xl bg-muted/50 p-4">
-        <Table className="min-w-full">
-          <ItemsHeader />
-          <TableBody>
-            {items?.map((item) => (
-              <FeedItem
-                key={item.id}
-                feedItem={item}
-                updateFeature={<UpdateFeedItem updateFeedItemId={item.id} />}
-                deleteFeature={
-                  <DeleteFeedItem deleteFeedItemId={String(item.id)} />
-                }
-              />
-            ))}
-          </TableBody>
-          {totalPages > 0 && (
-            <ItemsFooter>
-              <AppPagination
-                currentPage={currentPage}
-                onPageChange={setCurrentPage}
-                totalPages={totalPages}
-              />
-            </ItemsFooter>
-          )}
-        </Table>
-      </div>
+      {isLoading ? (
+        <div className="rounded-xl bg-muted/50 p-4">
+          <Table>
+            <ItemsHeader />
+            <TableBody>
+              {Array.from({ length: queryLimit || 15 }).map((_, index) => (
+                <LoadingSkeleton key={index} />
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : error ? (
+        <div className="text-center rounded-xl bg-muted/50 p-4">
+          ❌ Error fetching Feed Items. Please try again
+        </div>
+      ) : (
+        <div className="w-full max-w-full overflow-x-auto rounded-xl bg-muted/50 p-4">
+          <Table className="min-w-full">
+            <ItemsHeader />
+            <TableBody>
+              {items?.map((item) => (
+                <FeedItem
+                  key={item.id}
+                  feedItem={item}
+                  updateFeature={<UpdateFeedItem updateFeedItemId={item.id} />}
+                  deleteFeature={
+                    <DeleteFeedItem deleteFeedItemId={String(item.id)} />
+                  }
+                />
+              ))}
+            </TableBody>
+            {totalPages > 0 && (
+              <ItemsFooter>
+                <AppPagination
+                  currentPage={currentPage}
+                  onPageChange={setCurrentPage}
+                  totalPages={totalPages}
+                />
+              </ItemsFooter>
+            )}
+          </Table>
+        </div>
+      )}
     </div>
   );
 };

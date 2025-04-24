@@ -15,24 +15,20 @@ import {
   DeleteFeedContent,
   CreateFeedContent,
 } from "@/features/feed-contents";
-import { QueryLanguage, QueryId } from "@/features";
+import { QueryLanguage, QuerySelect } from "@/features";
 import { LoadingSkeleton } from "./loading-skeleton";
 import { useGetAllFeedContentsQuery } from "@/shared/api/feed-contents-api";
 import { IGetAllContentsParams } from "@/shared/model/feed-contents";
 import { TABLE_HEADERS } from "../model";
+import { ICategoryResponse } from "@/shared/model/feed-categories";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ContentsTable = ({ contents }: { contents: any[] }) => (
   <Table>
     <TableHeader>
       <TableRow>
-        {TABLE_HEADERS.map((header, index) => (
-          <TableHead
-            key={header}
-            className={index === TABLE_HEADERS.length - 1 ? "text-right" : ""}
-          >
-            {header}
-          </TableHead>
+        {TABLE_HEADERS.map((header) => (
+          <TableHead key={header}>{header}</TableHead>
         ))}
       </TableRow>
     </TableHeader>
@@ -55,13 +51,12 @@ export const FeedContentsList = () => {
   const selectedLanguage = useSelector(
     (state: RootState) => state.language.selectedLanguage
   );
-  const [categoryId, setCategoryId] = useState<string | undefined>(undefined);
+  const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
 
   const queryParams: IGetAllContentsParams = {
     feedId: feedId!,
     lang: selectedLanguage,
-    categoryId: categoryId,
-    // ...(categoryId && { categoryId }),
+    categoryId: String(categoryId),
   };
 
   const { data, isLoading, error } = useGetAllFeedContentsQuery(queryParams, {
@@ -129,12 +124,31 @@ export const FeedContentsList = () => {
     <div className="flex flex-1 flex-col gap-4 p-4">
       <div className="flex justify-between items-center mt-4 p-4 rounded-xl bg-muted/50">
         <QueryFilter>
-          <QueryId
-            labelText="Category ID"
-            id={categoryId}
-            placeholder="ID number"
-            onIdChange={(e) => setCategoryId(e.target.value || undefined)}
+          <QuerySelect<
+            ICategoryResponse,
+            number | undefined,
+            IGetCategoriesParams
+          >
+            labelText="Categories"
+            value={categoryId}
+            elementId="category-id-filter"
+            placeholder="Select category"
+            onValueChange={setCategoryId}
+            useQueryHook={useGetAllCategoriesQuery}
+            queryParams={{
+              limit: 100,
+              page: 1,
+              lang: selectedLanguage,
+            }}
+            getDisplayValue={(category) =>
+              category.translations[0]?.name || `Category ${category.id}`
+            }
+            getKeyValue={(category) => category.id}
+            showAllOption={true}
+            allOptionValue="none"
+            allOptionText="All Categories"
           />
+
           <QueryLanguage />
         </QueryFilter>
         <CreateFeedContent />

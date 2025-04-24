@@ -13,14 +13,15 @@ import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import { toast } from "sonner";
 import {
-  useGetFeedContentQuery,
+  useLazyGetFeedContentQuery,
   useUpdateFeedContentMutation,
 } from "@/shared/api/feed-contents-api";
 import { IUpdateContent } from "../model";
+import { Pencil } from "lucide-react";
 
 export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
-  const { data: contentData, isLoading: isFetching } =
-    useGetFeedContentQuery(updateContentId);
+  const [trigger, { data: contentData, isLoading: isFetching }] =
+    useLazyGetFeedContentQuery();
   const [updateContent, { isLoading: isUpdating }] =
     useUpdateFeedContentMutation();
 
@@ -30,7 +31,12 @@ export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
   const [contentLink, setContentLink] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  // Populate form with existing data when feedData is available
+  useEffect(() => {
+    if (showModal && updateContentId) {
+      trigger(updateContentId);
+    }
+  }, [showModal, updateContentId, trigger]);
+
   useEffect(() => {
     if (contentData) {
       setFeedId(contentData.feed_id);
@@ -67,11 +73,11 @@ export const UpdateFeedContent = ({ updateContentId }: IUpdateContent) => {
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger asChild>
         <Button
-          className="cursor-pointer min-w-[85px]"
+          className="cursor-pointer"
           variant="default"
           disabled={isFetching}
         >
-          Update
+          <Pencil />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] sm:max-h-[550px] overflow-scroll">

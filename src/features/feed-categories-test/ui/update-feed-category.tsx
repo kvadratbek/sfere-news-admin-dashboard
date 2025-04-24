@@ -15,6 +15,7 @@ import {
 import { ITranslations } from "@/shared/model/feed-categories";
 import { CategoryForm } from "./form";
 import { IUpdateCategory } from "../model";
+import { Pencil } from "lucide-react";
 
 export const UpdateFeedCategory = ({ updateCategoryId }: IUpdateCategory) => {
   const [trigger, { data: categoryData, isLoading: isFetching }] =
@@ -45,8 +46,12 @@ export const UpdateFeedCategory = ({ updateCategoryId }: IUpdateCategory) => {
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger asChild>
-        <Button className="cursor-pointer min-w-[85px]" variant="default">
-          Update
+        <Button
+          className="cursor-pointer"
+          variant="default"
+          disabled={isFetching}
+        >
+          <Pencil />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] sm:max-h-[550px] overflow-scroll">

@@ -1,3 +1,3 @@
-import { IQueryId } from "./types";
+import { IQuerySelect } from "./types";
 
-export type { IQueryId };
+export type { IQuerySelect };

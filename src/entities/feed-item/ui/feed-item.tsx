@@ -80,7 +80,7 @@ export const FeedItem = ({
           </DialogTrigger>
           <DialogContent>
             <img
-              src={feedItem.thumbnails?.dld_url}
+              src={feedItem.thumbnails?.src_url}
               width={feedItem.thumbnails?.width}
               height={feedItem.thumbnails?.height}
               alt={feedItem.thumbnails?.alt_text}

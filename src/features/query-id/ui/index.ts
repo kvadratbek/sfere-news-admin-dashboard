@@ -1,3 +1,3 @@
-import { QueryId } from "./query-id";
+import { QuerySelect } from "./query-select";
 
-export { QueryId };
+export { QuerySelect };

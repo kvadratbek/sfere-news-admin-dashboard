@@ -5,7 +5,6 @@ import {
   IFeedContentsResponse,
   IGetAllContentsParams,
 } from "@/shared/model/feed-contents";
-import { ENVIRONMENT_VARIABLES } from "@/shared/constants";
 
 export const feedContentsApi = createApi({
   reducerPath: "feedContentApi",
@@ -15,7 +14,7 @@ export const feedContentsApi = createApi({
       headers.set("Accept", "application/json");
       headers.set("Content-Type", "application/json");
 
-      const apiKey = ENVIRONMENT_VARIABLES.API_KEY;
+      const apiKey = import.meta.env.VITE_API_KEY;
       if (apiKey) {
         headers.set("Authorization", `Bearer ${apiKey}`);
       }
@@ -31,7 +30,7 @@ export const feedContentsApi = createApi({
         url: `/v1/admin/feeds/content/${id}`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "FeedContent", id }],
+      providesTags: ["FeedContent"],
     }),
 
     // POST /v1/admin/feeds/content
@@ -85,7 +84,7 @@ export const feedContentsApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "FeedContent", id }],
+      invalidatesTags: ["FeedContent"],
     }),
 
     // DELETE /v1/admin/feeds/content/{id}
@@ -94,14 +93,14 @@ export const feedContentsApi = createApi({
         url: `/v1/admin/feeds/content/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [{ type: "FeedContent", id }],
+      invalidatesTags: ["FeedContent"],
     }),
   }),
 });
 
 // Export hooks for usage in components
 export const {
-  useGetFeedContentQuery,
+  useLazyGetFeedContentQuery,
   useCreateFeedContentMutation,
   useGetAllFeedContentsQuery,
   useUpdateFeedContentMutation,

@@ -13,7 +13,7 @@ import { Label } from "@/shared/ui/label";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import {
-  useGetFeedItemByIdQuery,
+  useLazyGetFeedItemByIdQuery,
   useUpdateFeedItemMutation,
 } from "@/shared/api/feed-items-api";
 import { IUpdateFeedItem } from "../model/types";
@@ -21,8 +21,8 @@ import { Textarea } from "@/shared/ui/textarea";
 import { Pencil } from "lucide-react";
 
 export const UpdateFeedItem = ({ updateFeedItemId }: IUpdateFeedItem) => {
-  const { data: feedItemData, isLoading: isFetching } =
-    useGetFeedItemByIdQuery(updateFeedItemId);
+  const [trigger, { data: feedItemData, isLoading: isFetching }] =
+    useLazyGetFeedItemByIdQuery();
   const [updateFeedItem, { isLoading: isUpdating }] =
     useUpdateFeedItemMutation();
 
@@ -42,6 +42,12 @@ export const UpdateFeedItem = ({ updateFeedItemId }: IUpdateFeedItem) => {
   const [feedItemThumbnailDldUrl, setFeedItemThumbnailDldUrl] = useState("");
   const [feedItemTitle, setFeedItemTitle] = useState("");
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (showModal && updateFeedItemId) {
+      trigger(updateFeedItemId);
+    }
+  }, [showModal, updateFeedItemId, trigger]);
 
   // Populate form with existing data when feedItemData is available
   useEffect(() => {

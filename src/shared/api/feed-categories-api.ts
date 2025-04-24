@@ -4,7 +4,6 @@ import {
   IPostCategory,
   IGetCategoriesParams,
 } from "@/shared/model/feed-categories";
-import { ENVIRONMENT_VARIABLES } from "@/shared/constants";
 
 export const feedCategoriesApi = createApi({
   reducerPath: "feedCategoriesApi",
@@ -14,7 +13,7 @@ export const feedCategoriesApi = createApi({
       headers.set("Accept", "application/json");
       headers.set("Content-Type", "application/json");
 
-      const apiKey = ENVIRONMENT_VARIABLES.API_KEY;
+      const apiKey = import.meta.env.VITE_API_KEY;
       if (apiKey) {
         headers.set("Authorization", `Bearer ${apiKey}`);
       }

@@ -11,8 +11,6 @@ export const ItemsHeader = () => {
         <TableHead>Description</TableHead>
         <TableHead>Lang</TableHead>
         <TableHead>Thumbnail</TableHead>
-        <TableHead>Edit</TableHead>
-        <TableHead>Delete</TableHead>
       </TableRow>
     </TableHeader>
   );

@@ -2,6 +2,7 @@ import { Button } from "@/shared/ui/button";
 import { toast } from "sonner";
 import { useDeleteCategoryMutation } from "@/shared/api/feed-categories-api";
 import { IDeleteCategory } from "../model";
+import { Trash } from "lucide-react";
 
 export const DeleteFeedCategory = ({ deleteCategoryId }: IDeleteCategory) => {
   const [deleteCategory, { isLoading }] = useDeleteCategoryMutation();
@@ -21,12 +22,12 @@ export const DeleteFeedCategory = ({ deleteCategoryId }: IDeleteCategory) => {
 
   return (
     <Button
-      className="cursor-pointer min-w-[85px]"
+      className="cursor-pointer"
       onClick={() => handleDelete(deleteCategoryId)}
       variant="destructive"
       disabled={isLoading}
     >
-      {isLoading ? "Deleting" : "Delete"}
+      <Trash />
     </Button>
   );
 };
