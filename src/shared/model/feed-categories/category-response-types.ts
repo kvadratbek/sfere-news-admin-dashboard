@@ -1,3 +1,8 @@
+
+interface IGetAllCategories {
+  count: number;
+  categories:ICategoryResponse[]
+}
 interface ICategoryResponse {
   icon_id: string;
   icon_url: string;
@@ -10,4 +15,4 @@ interface ITranslations {
   name: string;
 }
 
-export type { ICategoryResponse, ITranslations };
+export type { ICategoryResponse, ITranslations, IGetAllCategories};

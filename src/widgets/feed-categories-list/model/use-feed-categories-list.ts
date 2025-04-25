@@ -9,16 +9,19 @@ export const useFeedCategories = () => {
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [queryLimit, setQueryLimit] = useState<number | undefined>(15);
-  const totalPages = 1;
+  
 
   const { data, isLoading, error } = useGetAllCategoriesQuery({
     limit: queryLimit,
-    page: 1,
+    page: currentPage,
     lang: selectedLanguage,
   });
+  const totalItems = data?.count ?? 0;
+  const totalPages = Math.ceil(totalItems / (queryLimit ?? 15))
+
 
   return {
-    dataCategories: data,
+    dataCategories: data?.categories,
     isLoading,
     error,
     currentPage,

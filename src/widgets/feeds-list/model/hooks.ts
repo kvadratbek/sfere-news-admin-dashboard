@@ -18,8 +18,11 @@ export const useFeedsList = () => {
     lang: selectedLanguage,
   });
 
+  const totalItems = data?.count ?? 0;
+  const totalPages = Math.ceil(totalItems / (queryLimit ?? 15));
+
   return {
-    feeds: data,
+    feeds: data?.feeds,
     isLoading,
     error,
     currentPage,
@@ -29,6 +32,6 @@ export const useFeedsList = () => {
     queryPriority,
     toggleQueryPriority: () => setQueryPriority((prev) => !prev),
     selectedLanguage,
-    totalPages: 1,
+    totalPages: totalPages,
   };
 };

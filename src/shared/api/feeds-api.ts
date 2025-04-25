@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  IGetAllFeedsResponse,
   IFeedResponse,
   IPostFeed,
   IGetFeedsParams,
@@ -32,13 +33,13 @@ export const feedsApi = createApi({
       }),
       invalidatesTags: ["Feed"],
     }),
-    getAllFeeds: builder.query<IFeedResponse[], IGetFeedsParams>({
+    getAllFeeds: builder.query<IGetAllFeedsResponse, IGetFeedsParams>({
       query: ({ limit = 10, page = 1, priority = true, lang = "uz" }) => ({
         url: "/v1/admin/feeds/feed/all",
         params: { limit, page, priority, lang },
       }),
-      transformResponse: (response: { feeds: IFeedResponse[] }) =>
-        response.feeds,
+      // transformResponse: (response: { feeds: IFeedResponse[] }) =>
+      //   response.feeds,
       providesTags: ["Feed"],
     }),
     refreshFeedItemsByFeedId: builder.query<IAllFeedItemsResponse, number>({

@@ -5,8 +5,8 @@ export const ItemsHeader = () => {
     <TableHeader>
       <TableRow>
         <TableHead>ID</TableHead>
-        <TableHead>Feed ID</TableHead>
-        <TableHead>Category ID</TableHead>
+        <TableHead>Feed</TableHead>
+        <TableHead>Category</TableHead>
         <TableHead>Title</TableHead>
         <TableHead>Description</TableHead>
         <TableHead>Lang</TableHead>
