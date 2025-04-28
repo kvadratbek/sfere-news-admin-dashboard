@@ -14,12 +14,43 @@ export const FeedItem = ({
 }: IFeedItemEntity) => {
   const [titleIsOpen, setTitleIsOpen] = useState(false);
   const [descIsOpen, setDescIsOpen] = useState(false);
-
+  const [sourceTitleOpen, setSourceTitleOpen] = useState(false)
   return (
     <TableRow key={feedItem.id}>
       <TableCell>{feedItem.id ?? "No Data"}</TableCell>
-      <TableCell>{feedItem.feed_id ?? "No Data"}</TableCell>
-      <TableCell>{feedItem.category_id ?? "No Data"}</TableCell>
+      <TableCell>  
+        <Collapsible
+          open={titleIsOpen}
+          onOpenChange={setSourceTitleOpen}
+          className="max-w-[10vw] space-y-2" // Keep width constraint
+        >
+          <CollapsibleTrigger asChild>
+            <div
+              className={cn(
+                "rounded-md py-3 font-mono text-sm cursor-pointer",
+                sourceTitleOpen
+                  ? "text-wrap whitespace-normal" // Full text when open
+                  : "whitespace-nowrap overflow-hidden overflow-ellipsis" // Truncated when closed
+              )}
+            >
+              {feedItem.source_title ? (
+                sourceTitleOpen ? (
+                  <a href={feedItem.soruce_url} className="underline">
+                    {feedItem.source_title ?? "No Data"} 
+                  </a>
+                ) : (
+                  feedItem.source_title
+                )
+              ) : (
+                "No Data"
+              )}
+              | ID:{feedItem.feed_id ?? "No Data"}
+            </div>
+          </CollapsibleTrigger>
+          
+        </Collapsible>
+        </TableCell>
+      <TableCell>{feedItem.category_name} | ID {feedItem.category_id ?? "No Data"}</TableCell>
       <TableCell>
         <Collapsible
           open={titleIsOpen}

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  IGetAllCategories,
   ICategoryResponse,
   IPostCategory,
   IGetCategoriesParams,
@@ -31,13 +32,13 @@ export const feedCategoriesApi = createApi({
       }),
       invalidatesTags: ["Category"],
     }),
-    getAllCategories: builder.query<ICategoryResponse[], IGetCategoriesParams>({
+    getAllCategories: builder.query<IGetAllCategories, IGetCategoriesParams>({
       query: ({ limit, page, lang }) => ({
         url: "/v1/admin/feeds/categories/all",
         params: { limit, page, lang },
       }),
-      transformResponse: (response: { categories: ICategoryResponse[] }) =>
-        response.categories,
+      // transformResponse: (response: { categories: ICategoryResponse[] }) =>
+      //   response.categories,
       providesTags: ["Category"],
     }),
     serveCategoryIcon: builder.query<ICategoryResponse, string>({
