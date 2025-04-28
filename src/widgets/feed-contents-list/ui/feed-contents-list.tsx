@@ -20,7 +20,11 @@ import { LoadingSkeleton } from "./loading-skeleton";
 import { useGetAllFeedContentsQuery } from "@/shared/api/feed-contents-api";
 import { IGetAllContentsParams } from "@/shared/model/feed-contents";
 import { TABLE_HEADERS } from "../model";
-import { ICategoryResponse } from "@/shared/model/feed-categories";
+import {
+  ICategoryResponse,
+  IGetCategoriesParams,
+} from "@/shared/model/feed-categories";
+import { useGetAllCategoriesQuery } from "@/shared/api/feed-categories-api";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ContentsTable = ({ contents }: { contents: any[] }) => (
@@ -130,6 +134,7 @@ export const FeedContentsList = () => {
             IGetCategoriesParams
           >
             labelText="Categories"
+            id="category-id-filter"
             value={categoryId}
             elementId="category-id-filter"
             placeholder="Select category"
@@ -148,7 +153,6 @@ export const FeedContentsList = () => {
             allOptionValue="none"
             allOptionText="All Categories"
           />
-
           <QueryLanguage />
         </QueryFilter>
         <CreateFeedContent />

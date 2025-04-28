@@ -1,4 +1,4 @@
-// query-select.tsx
+import { skipToken } from "@reduxjs/toolkit/query";
 import {
   Select,
   SelectContent,
@@ -10,12 +10,14 @@ import { Label } from "@/shared/ui/label";
 import { IQuerySelect } from "../model";
 
 type QueryHookType<TData, TArgs = Record<string, unknown>> = (
-  args: TArgs | undefined,
+  args: TArgs | typeof skipToken,
   options?: Record<string, unknown>
 ) => {
   data?: TData[];
   isLoading: boolean;
-  error: unknown;
+  error?: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any; // Allow additional properties
 };
 
 interface QuerySelectProps<TData, TValue, TArgs = Record<string, unknown>>
@@ -31,21 +33,23 @@ interface QuerySelectProps<TData, TValue, TArgs = Record<string, unknown>>
   allOptionText?: string;
 }
 
-export const QuerySelect = <TData, TValue>({
+export const QuerySelect = <TData, TValue, TArgs>({
   labelText,
   elementId,
   value,
   placeholder,
   onValueChange,
   useQueryHook,
-  queryParams = {} as any, // Temporary cast, refine if needed
+  queryParams,
   getDisplayValue,
   getKeyValue,
   showAllOption = false,
   allOptionValue = "none",
   allOptionText = `All ${labelText}`,
-}: QuerySelectProps<TData, TValue>) => {
-  const { data, isLoading, error } = useQueryHook(queryParams);
+}: QuerySelectProps<TData, TValue, TArgs>) => {
+  const { data, isLoading, error } = useQueryHook(
+    queryParams ?? skipToken // Handle undefined queryParams
+  );
 
   const handleValueChange = (selectedValue: string) => {
     if (showAllOption && selectedValue === allOptionValue) {
