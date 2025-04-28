@@ -1,5 +1,6 @@
 interface IFeedItem {
   category_id: number;
+  category_name:string;
   content: string;
   created_at: string;
   description: string;

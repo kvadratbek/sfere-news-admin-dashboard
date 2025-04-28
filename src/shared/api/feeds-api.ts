@@ -5,6 +5,7 @@ import {
   IGetFeedsParams,
 } from "@/shared/model/feeds";
 import { IAllFeedItemsResponse } from "@/shared/model/feed-items";
+import { IFGetAllFeeds } from "../model/feeds/feed-response-types";
 
 export const feedsApi = createApi({
   reducerPath: "feedsApi",
@@ -32,13 +33,13 @@ export const feedsApi = createApi({
       }),
       invalidatesTags: ["Feed"],
     }),
-    getAllFeeds: builder.query<IFeedResponse[], IGetFeedsParams>({
+    getAllFeeds: builder.query<IFGetAllFeeds, IGetFeedsParams>({
       query: ({ limit = 10, page = 1, priority = true, lang = "uz" }) => ({
         url: "/v1/admin/feeds/feed/all",
         params: { limit, page, priority, lang },
       }),
-      transformResponse: (response: { feeds: IFeedResponse[] }) =>
-        response.feeds,
+      // transformResponse: (response: { feeds: IFGetAllFeeds[] }) =>
+      //   response.feeds,
       providesTags: ["Feed"],
     }),
     refreshFeedItemsByFeedId: builder.query<IAllFeedItemsResponse, number>({
