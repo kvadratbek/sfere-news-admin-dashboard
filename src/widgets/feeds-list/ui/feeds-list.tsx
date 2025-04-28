@@ -77,19 +77,17 @@ export const FeedsList = () => {
                 />
               ))}
             </TableBody>
-            {totalPages > 0 && (
-              <TableFooter>
-                <TableRow>
-                  <TableCell colSpan={10}>
-                    <AppPagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={setCurrentPage}
-                    />
-                  </TableCell>
-                </TableRow>
-              </TableFooter>
-            )}
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={10}>
+                  <AppPagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         </div>
       )}

@@ -7,6 +7,7 @@ import {
   // QueryId,
   QueryLanguage,
   QueryLimit,
+  QuerySelect,
   QuerySort,
 } from "@/features";
 import { CreateFeedItem, UpdateFeedItem } from "@/features/feed-items";
@@ -16,13 +17,15 @@ import { LoadingSkeleton } from "./loading-skeleton";
 import { ItemsHeader } from "./items-header";
 import { ItemsFooter } from "./items-footer";
 import { DeleteFeedItem } from "@/features/feed-items/delete-feed-tem/ui/delete-feed-item";
+import { useGetAllFeedsQuery } from "@/shared/api/feeds-api";
+import { IFeedResponse, IGetFeedsParams } from "@/shared/model/feeds";
 
 const ControlBar = memo(
   ({
     queryLimit,
     setQueryLimit,
-    // queryFeedId,
-    // setQueryFeedId,
+    queryFeedId,
+    setQueryFeedId,
     // queryFeedCategoryId,
     // setQueryFeedCategoryId,
     querySort,
@@ -37,6 +40,10 @@ const ControlBar = memo(
     querySort: string | undefined;
     setQuerySort: (value: string | undefined) => void;
   }) => {
+    const selectedLanguage = useSelector(
+      (state: RootState) => state.language.selectedLanguage
+    );
+
     return (
       <div className="flex justify-between items-center mt-4 p-4 rounded-xl bg-muted/50">
         <QueryFilter>
@@ -46,6 +53,28 @@ const ControlBar = memo(
             limitOnChange={setQueryLimit}
           />
           <QueryLanguage />
+          <QuerySelect<IFeedResponse, number | undefined, IGetFeedsParams>
+            id="feed-id-query"
+            elementId="feed-id-query"
+            labelText="Items by Feed"
+            placeholder="Select Feed"
+            value={queryFeedId}
+            onValueChange={setQueryFeedId}
+            useQueryHook={useGetAllFeedsQuery}
+            queryParams={{
+              lang: selectedLanguage,
+              limit: 100,
+              page: 1,
+              priority: true,
+            }}
+            getDisplayValue={(feed) =>
+              feed.translation[0]?.title || `Feed ${feed.id}`
+            }
+            getKeyValue={(feed) => feed.id}
+            showAllOption={true}
+            allOptionValue="none"
+            allOptionText="All Feeds"
+          />
           {/* <QueryId
             elementId="feed-id-query"
             labelText="Filter by Feed"

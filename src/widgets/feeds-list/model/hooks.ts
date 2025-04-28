@@ -29,6 +29,6 @@ export const useFeedsList = () => {
     queryPriority,
     toggleQueryPriority: () => setQueryPriority((prev) => !prev),
     selectedLanguage,
-    totalPages: 1,
+    totalPages: 2,
   };
 };
