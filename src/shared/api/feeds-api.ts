@@ -1,4 +1,3 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IFeedResponse,
   IPostFeed,
@@ -6,24 +5,9 @@ import {
 } from "@/shared/model/feeds";
 import { IAllFeedItemsResponse } from "@/shared/model/feed-items";
 import { IFGetAllFeeds } from "../model/feeds/feed-response-types";
+import { baseApi } from "./base_api";
 
-export const feedsApi = createApi({
-  reducerPath: "feedsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api1.sfere.pro",
-    prepareHeaders: (headers) => {
-      headers.set("Accept", "application/json");
-      headers.set("Content-Type", "application/json");
-
-      const apiKey = import.meta.env.VITE_API_KEY;
-      if (apiKey) {
-        headers.set("Authorization", `Bearer ${apiKey}`);
-      }
-
-      return headers;
-    },
-  }),
-  tagTypes: ["Feed"],
+export const feedsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createFeed: builder.mutation<IFeedResponse, IPostFeed>({
       query: (feed) => ({

@@ -4,21 +4,19 @@ import {
     FetchBaseQueryError,
     fetchBaseQuery,
   } from "@reduxjs/toolkit/query";
-  import { RootState } from "@/app/store";
+import { RootState } from "@/app/store";
 import { authTokenChange, logoutUser } from "@/features/authentication/auth-slice/model/auth-slice";
 
-  
-  // Базовый запрос с токеном
-  const baseQuery = fetchBaseQuery({
+const baseQuery = fetchBaseQuery({
     baseUrl: "https://api1.sfere.pro",
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState);
+      const token = (getState() as RootState).auth.usedToken;
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
       return headers;
     },
-  });
+});
   
   const isUnauthorizedError = (error: unknown): boolean => {
     if (!error || typeof error !== "object") return false;
@@ -26,7 +24,8 @@ import { authTokenChange, logoutUser } from "@/features/authentication/auth-slic
     const err = error as FetchBaseQueryError;
   
     return (
-      err?.status === 401 || (typeof err?.data === "object" &&
+      err?.status === 401 ||
+      (typeof err?.data === "object" &&
         (err.data as any)?.status === 401)
     );
   };
@@ -44,12 +43,12 @@ import { authTokenChange, logoutUser } from "@/features/authentication/auth-slic
     if (isUnauthorizedError(result.error)) {
       if (!authState.refreshToken) return result;
   
-      const refreshBaseQuery = fetchBaseQuery({ baseUrl:"https://api1.sfere.pro" });
+      const refreshBaseQuery = fetchBaseQuery({ baseUrl: "https://api1.sfere.pro/" });
   
       const refreshResult = await refreshBaseQuery(
         {
-          url: "/v1/refresh-token",
-          method: "POST",
+          url: "/v1/auth/oauth/refresh",
+          method: "GET",
           body: {
             refresh_token: authState.refreshToken,
           },
@@ -75,5 +74,5 @@ import { authTokenChange, logoutUser } from "@/features/authentication/auth-slic
     }
   
     return result;
-  };
+}
   
