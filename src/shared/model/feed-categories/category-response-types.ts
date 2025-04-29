@@ -1,7 +1,6 @@
-
 interface IGetAllCategories {
   count: number;
-  categories:ICategoryResponse[]
+  categories: ICategoryResponse[];
 }
 interface ICategoryResponse {
   icon_id: string;
@@ -15,4 +14,4 @@ interface ITranslations {
   name: string;
 }
 
-export type { ICategoryResponse, ITranslations, IGetAllCategories};
+export type { ICategoryResponse, ITranslations, IGetAllCategories };

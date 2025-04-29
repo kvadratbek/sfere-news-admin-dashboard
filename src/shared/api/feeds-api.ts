@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IGetAllFeedsResponse,
   IFeedResponse,
@@ -6,24 +6,26 @@ import {
   IGetFeedsParams,
 } from "@/shared/model/feeds";
 import { IAllFeedItemsResponse } from "@/shared/model/feed-items";
+import { baseApi } from "./base-api";
 
-export const feedsApi = createApi({
-  reducerPath: "feedsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api1.sfere.pro",
-    prepareHeaders: (headers) => {
-      headers.set("Accept", "application/json");
-      headers.set("Content-Type", "application/json");
+// export const feedsApi = createApi({
+//   reducerPath: "feedsApi",
+//   baseQuery: fetchBaseQuery({
+//     baseUrl: "https://api1.sfere.pro",
+//     prepareHeaders: (headers) => {
+//       headers.set("Accept", "application/json");
+//       headers.set("Content-Type", "application/json");
 
-      const apiKey = import.meta.env.VITE_API_KEY;
-      if (apiKey) {
-        headers.set("Authorization", `Bearer ${apiKey}`);
-      }
+//       const apiKey = import.meta.env.VITE_API_KEY;
+//       if (apiKey) {
+//         headers.set("Authorization", `Bearer ${apiKey}`);
+//       }
 
-      return headers;
-    },
-  }),
-  tagTypes: ["Feed"],
+//       return headers;
+//     },
+//   }),
+//   tagTypes: ["Feed"],
+export const feedsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createFeed: builder.mutation<IFeedResponse, IPostFeed>({
       query: (feed) => ({
@@ -74,6 +76,7 @@ export const feedsApi = createApi({
 export const {
   useCreateFeedMutation,
   useGetAllFeedsQuery,
+  useLazyGetAllFeedsQuery,
   useLazyRefreshFeedItemsByFeedIdQuery,
   useLazyGetFeedByIdQuery,
   useUpdateFeedMutation,

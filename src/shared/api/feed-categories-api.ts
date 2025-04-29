@@ -76,6 +76,7 @@ export const feedCategoriesApi = createApi({
 export const {
   useCreateCategoryMutation,
   useGetAllCategoriesQuery,
+  useLazyGetAllCategoriesQuery,
   useServeCategoryIconQuery,
   useLazyGetCategoryByIdQuery,
   useUpdateCategoryMutation,
