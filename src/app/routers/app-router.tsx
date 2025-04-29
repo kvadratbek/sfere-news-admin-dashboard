@@ -2,6 +2,9 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { lazy, Suspense, Component } from "react";
 
 // Lazy load page components
+const TestPage = lazy(() =>
+  import("@/pages/test/test").then((module) => ({ default: module.TestPage }))
+);
 const LoginPage = lazy(() =>
   import("@/pages").then((module) => ({ default: module.LoginPage }))
 );
@@ -26,8 +29,7 @@ const Callback = lazy(() =>
   }))
 );
 
-// Error boundary
-class ErrorBoundary extends Component {
+class ErrorBoundary extends Component<{ children: React.ReactNode }> {
   state = { hasError: false };
 
   static getDerivedStateFromError() {
@@ -91,6 +93,10 @@ export const AppRouter = () => {
         {
           path: "feed-items",
           element: <FeedItemsPage />,
+        },
+        {
+          path: "test",
+          element: <TestPage />,
         },
       ],
     },

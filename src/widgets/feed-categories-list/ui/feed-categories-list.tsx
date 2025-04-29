@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { FeedCategoriesListLoading } from "./table-loading";
 import { FeedCategoriesListError } from "./error";
 import { FeedCategoriesContainer } from "./container";
@@ -6,7 +5,7 @@ import { FeedCategoriesTable } from "./table";
 import { FeedCategoriesControls } from "./table-controls";
 import { useFeedCategories } from "../model";
 
-export const FeedCategoriesList: FC = () => {
+export const FeedCategoriesList = () => {
   const {
     dataCategories,
     isLoading,

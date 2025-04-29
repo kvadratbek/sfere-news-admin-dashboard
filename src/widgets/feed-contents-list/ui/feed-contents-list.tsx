@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
@@ -49,7 +49,6 @@ const ContentsTable = ({ contents }: { contents: any[] }) => (
   </Table>
 );
 
-// Main component
 export const FeedContentsList = () => {
   const { feedId } = useParams<{ feedId: string }>();
   const selectedLanguage = useSelector(
@@ -66,6 +65,35 @@ export const FeedContentsList = () => {
   const { data, isLoading, error } = useGetAllFeedContentsQuery(queryParams, {
     skip: !feedId,
   });
+
+  // Call useGetAllCategoriesQuery at the top level
+  const categoryQueryParams: IGetCategoriesParams = {
+    limit: 100,
+    page: 1,
+    lang: selectedLanguage,
+  };
+  const {
+    data: categoryData,
+    isLoading: isCategoryLoading,
+    error: categoryError,
+  } = useGetAllCategoriesQuery(categoryQueryParams);
+
+  // Transform data to match QuerySelect's expected type (ICategoryResponse[])
+  const transformedData = useMemo(() => {
+    return categoryData?.categories ?? [];
+  }, [categoryData]);
+
+  // Create a query hook that returns the transformed data
+  const queryHook = useMemo(
+    () => () => // args: IGetCategoriesParams | typeof skipToken,
+    // options?: Record<string, unknown>
+    ({
+      data: transformedData,
+      isLoading: isCategoryLoading,
+      error: categoryError,
+    }),
+    [transformedData, isCategoryLoading, categoryError]
+  );
 
   const dataContents = data?.feedContents.contents;
 
@@ -116,7 +144,7 @@ export const FeedContentsList = () => {
       return (
         <div className="flex justify-center items-center rounded-xl p-4 text-center">
           ⚠️ No contents available for Feed ID: {feedId} with specified
-          parametres
+          parameters
         </div>
       );
     }
@@ -139,12 +167,8 @@ export const FeedContentsList = () => {
             elementId="category-id-filter"
             placeholder="Select category"
             onValueChange={setCategoryId}
-            useQueryHook={useGetAllCategoriesQuery}
-            queryParams={{
-              limit: 100,
-              page: 1,
-              lang: selectedLanguage,
-            }}
+            useQueryHook={queryHook}
+            queryParams={categoryQueryParams}
             getDisplayValue={(category) =>
               category.translations[0]?.name || `Category ${category.id}`
             }
