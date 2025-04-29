@@ -1,5 +1,5 @@
-import { authRedcuer, clearTokens, setTokens } from "./auth-slice";
+import { authRedcuer, logoutUser} from "./auth-slice";
 import { Callback } from "./callback";
 
-export { clearTokens, setTokens, Callback };
+export { logoutUser, Callback };
 export default authRedcuer;

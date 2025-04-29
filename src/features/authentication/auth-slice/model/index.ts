@@ -1,3 +1,3 @@
-import authRedcuer, { clearTokens, setTokens } from "./auth-slice";
+import authRedcuer, { logoutUser } from "./auth-slice";
 
-export { authRedcuer, clearTokens, setTokens };
+export { authRedcuer, logoutUser };

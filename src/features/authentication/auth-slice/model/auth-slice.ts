@@ -1,26 +1,36 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IAuthTokens } from "@/shared/model/authentication";
 
 interface AuthState {
-  tokens: IAuthTokens | null;
+  token:string | null;
+  refreshToken: string | null;
 }
 
+interface AuthTokenPayload {
+   accessToken: string | null;
+   refreshToken: string | null;
+}
 const initialState: AuthState = {
-  tokens: null,
-};
+  token: localStorage.getItem('accessToken'),
+  refreshToken: localStorage.getItem('refreshToken')
+}
 
 const authSlice = createSlice({
-  name: "auth",
+  name:"auth",
   initialState,
-  reducers: {
-    setTokens(state, action: PayloadAction<IAuthTokens>) {
-      state.tokens = action.payload;
-    },
-    clearTokens(state) {
-      state.tokens = null;
-    },
-  },
-});
-
-export const { setTokens, clearTokens } = authSlice.actions;
+  reducers:{
+     authTokenChange: (state, action: PayloadAction<AuthTokenPayload>)=> {
+        localStorage.setItem('accessToken', action.payload.accessToken || '')
+        localStorage.setItem('refreshToken', action.payload.refreshToken || '')
+        state.token = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
+     },
+     logoutUser: (state) => {
+       localStorage.removeItem('accessToken')
+       localStorage.removeItem('refreshToken')
+       state.token = null;
+       state.refreshToken = null;
+     }
+  }
+})
+export const {authTokenChange, logoutUser} = authSlice.actions;
 export default authSlice.reducer;

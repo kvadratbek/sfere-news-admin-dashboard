@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IAuthTokens } from "@/shared/model/authentication";
+import { IAuthRefreshTokenResponse } from "../model/authentication/auth-tokens";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -14,7 +15,14 @@ export const authApi = createApi({
         params: { code },
       }),
     }),
+    refreshToken:builder.query<IAuthRefreshTokenResponse, string>({
+       query: (session_id) => ({
+        url:"/v1/auth/oauth/refresh",
+        method: "GET",
+        params: {session_id}
+       })
+    })
   }),
 });
 
-export const { useGetTokensQuery } = authApi;
+export const { useGetTokensQuery, useRefreshTokenQuery } = authApi;
