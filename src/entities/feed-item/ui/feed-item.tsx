@@ -14,29 +14,29 @@ export const FeedItem = ({
 }: IFeedItemEntity) => {
   const [titleIsOpen, setTitleIsOpen] = useState(false);
   const [descIsOpen, setDescIsOpen] = useState(false);
-  const [sourceTitleOpen, setSourceTitleOpen] = useState(false)
+  const [sourceTitle, setSourceTitle] = useState(false);
   return (
     <TableRow key={feedItem.id}>
       <TableCell>{feedItem.id ?? "No Data"}</TableCell>
-      <TableCell>  
+      <TableCell>
         <Collapsible
-          open={titleIsOpen}
-          onOpenChange={setSourceTitleOpen}
-          className="max-w-[10vw] space-y-2" // Keep width constraint
+          open={sourceTitle}
+          onOpenChange={setSourceTitle}
+          className="max-w-[15vw] space-y-2" // Keep width constraint
         >
           <CollapsibleTrigger asChild>
             <div
               className={cn(
                 "rounded-md py-3 font-mono text-sm cursor-pointer",
-                sourceTitleOpen
+                sourceTitle
                   ? "text-wrap whitespace-normal" // Full text when open
                   : "whitespace-nowrap overflow-hidden overflow-ellipsis" // Truncated when closed
               )}
             >
               {feedItem.source_title ? (
-                sourceTitleOpen ? (
+                sourceTitle ? (
                   <a href={feedItem.soruce_url} className="underline">
-                    {feedItem.source_title ?? "No Data"} 
+                    {feedItem.source_title ?? "No Data"}
                   </a>
                 ) : (
                   feedItem.source_title
@@ -44,13 +44,12 @@ export const FeedItem = ({
               ) : (
                 "No Data"
               )}
-              | ID:{feedItem.feed_id ?? "No Data"}
+              |  {feedItem.feed_id ?? "No Data"}
             </div>
           </CollapsibleTrigger>
-          
         </Collapsible>
-        </TableCell>
-      <TableCell>{feedItem.category_name} | ID {feedItem.category_id ?? "No Data"}</TableCell>
+      </TableCell>
+      <TableCell>{feedItem.category_name} | {feedItem.category_id ?? "No Data"}</TableCell>
       <TableCell>
         <Collapsible
           open={titleIsOpen}

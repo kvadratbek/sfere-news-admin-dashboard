@@ -1,11 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IAuthTokens } from "@/shared/model/authentication";
+import { IAuthRefreshTokenResponse } from "../model/authentication/auth-tokens";
+import { baseApi } from "./base_api";
 
-export const authApi = createApi({
-  reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api1.sfere.pro",
-  }),
+export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getTokens: builder.query<IAuthTokens, string>({
       query: (code) => ({
@@ -14,7 +11,14 @@ export const authApi = createApi({
         params: { code },
       }),
     }),
+    refreshToken:builder.mutation<IAuthRefreshTokenResponse, string>({
+       query: (session_id) => ({
+        url:"/v1/auth/oauth/refresh",
+        method: "GET",
+        params: {session_id}
+       })
+    })
   }),
 });
 
-export const { useGetTokensQuery } = authApi;
+export const { useGetTokensQuery, useRefreshTokenMutation } = authApi;

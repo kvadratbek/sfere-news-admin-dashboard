@@ -1,4 +1,3 @@
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IGetAllFeedsResponse,
   IFeedResponse,
@@ -6,7 +5,9 @@ import {
   IGetFeedsParams,
 } from "@/shared/model/feeds";
 import { IAllFeedItemsResponse } from "@/shared/model/feed-items";
-import { baseApi } from "./base-api";
+
+import { baseApi } from "./base_api";
+
 
 // export const feedsApi = createApi({
 //   reducerPath: "feedsApi",
@@ -25,6 +26,7 @@ import { baseApi } from "./base-api";
 //     },
 //   }),
 //   tagTypes: ["Feed"],
+
 export const feedsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createFeed: builder.mutation<IFeedResponse, IPostFeed>({
@@ -35,7 +37,9 @@ export const feedsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Feed"],
     }),
+
     getAllFeeds: builder.query<IGetAllFeedsResponse, IGetFeedsParams>({
+
       query: ({ limit = 10, page = 1, priority = true, lang = "uz" }) => ({
         url: "/v1/admin/feeds/feed/all",
         params: { limit, page, priority, lang },

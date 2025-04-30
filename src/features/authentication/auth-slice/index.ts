@@ -1,3 +1,3 @@
-import { authRedcuer, clearTokens, setTokens } from "./model";
+import { authRedcuer, logoutUser } from "./model";
 
-export { authRedcuer, clearTokens, setTokens };
+export { authRedcuer, logoutUser };

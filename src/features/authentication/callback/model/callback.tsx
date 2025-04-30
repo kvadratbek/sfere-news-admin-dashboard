@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useGetTokensQuery } from "@/shared/api/authentication";
+import { useGetTokensQuery, useRefreshTokenMutation } from "@/shared/api/authentication";
 import { useDispatch } from "react-redux";
-import { setTokens } from "@/features/authentication";
+// import { logoutUser } from "../../auth-slice";
+import { authTokenChange } from "../../auth-slice/model/auth-slice";
+
 
 export const Callback: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -19,13 +21,27 @@ export const Callback: React.FC = () => {
     skip: !code,
   });
 
+  const [refreshToken] = useRefreshTokenMutation()
+
   useEffect(() => {
-    if (tokens) {
-      dispatch(setTokens(tokens));
-      console.log(tokens);
-      navigate("/dashboard");
+    if (tokens?.session?.id) {
+      const fetchRefresh = async () => {
+        try {
+          console.log(tokens)
+          dispatch(authTokenChange({
+            accessToken: tokens.access_token,
+            session_id: tokens.session.id
+          }))
+          navigate("/dashboard")
+        } catch (err) {
+          console.log("Refresh Token Failed", err)
+        }
+      }
+      fetchRefresh()
     }
-  }, [tokens, dispatch, navigate]);
+  }, [tokens, dispatch, navigate, refreshToken]);
+
+
 
   if (isLoading) {
     return <div>Processing login...</div>;

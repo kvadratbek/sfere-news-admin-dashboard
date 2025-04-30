@@ -23,4 +23,5 @@ interface IFeedTranslation {
   title: string;
 }
 
+
 export type { IGetAllFeedsResponse, IFeedResponse };

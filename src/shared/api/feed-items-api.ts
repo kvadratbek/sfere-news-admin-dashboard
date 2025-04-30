@@ -1,4 +1,3 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IFeedItem,
   IMutateFeedItem,
@@ -6,24 +5,9 @@ import {
   IAllFeedItemsResponse,
   IGetItemsByFeedParams,
 } from "../model/feed-items";
+import { baseApi } from "./base_api";
 
-export const feedItemsApi = createApi({
-  reducerPath: "feedItemsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api1.sfere.pro",
-    prepareHeaders: (headers) => {
-      headers.set("Accept", "application/json");
-      headers.set("Content-Type", "application/json");
-
-      const apiKey = import.meta.env.VITE_API_KEY;
-      if (apiKey) {
-        headers.set("Authorization", `Bearer ${apiKey}`);
-      }
-
-      return headers;
-    },
-  }),
-  tagTypes: ["Feed-Item"],
+export const feedItemsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createFeedItem: builder.mutation<IFeedItem, IMutateFeedItem>({
       query: (item) => ({

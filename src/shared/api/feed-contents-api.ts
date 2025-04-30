@@ -1,28 +1,13 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IFeedContent,
   IFeedContentUpdate,
   IFeedContentsResponse,
   IGetAllContentsParams,
 } from "@/shared/model/feed-contents";
+import { baseApi } from "./base_api";
 
-export const feedContentsApi = createApi({
-  reducerPath: "feedContentApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api1.sfere.pro",
-    prepareHeaders: (headers) => {
-      headers.set("Accept", "application/json");
-      headers.set("Content-Type", "application/json");
-
-      const apiKey = import.meta.env.VITE_API_KEY;
-      if (apiKey) {
-        headers.set("Authorization", `Bearer ${apiKey}`);
-      }
-
-      return headers;
-    },
-  }),
-  tagTypes: ["FeedContent"], // For cache invalidation
+export const feedContentsApi = baseApi.injectEndpoints({
+// For cache invalidation
   endpoints: (builder) => ({
     // GET /v1/admin/feeds/content
     getFeedContent: builder.query<IFeedContent, number>({

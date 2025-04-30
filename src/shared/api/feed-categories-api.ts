@@ -1,28 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IGetAllCategories,
   ICategoryResponse,
   IPostCategory,
   IGetCategoriesParams,
 } from "@/shared/model/feed-categories";
+import { baseApi } from "./base_api";
 
-export const feedCategoriesApi = createApi({
-  reducerPath: "feedCategoriesApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api1.sfere.pro",
-    prepareHeaders: (headers) => {
-      headers.set("Accept", "application/json");
-      headers.set("Content-Type", "application/json");
-
-      const apiKey = import.meta.env.VITE_API_KEY;
-      if (apiKey) {
-        headers.set("Authorization", `Bearer ${apiKey}`);
-      }
-
-      return headers;
-    },
-  }),
-  tagTypes: ["Category"],
+export const feedCategoriesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createCategory: builder.mutation<ICategoryResponse, IPostCategory>({
       query: (category) => ({

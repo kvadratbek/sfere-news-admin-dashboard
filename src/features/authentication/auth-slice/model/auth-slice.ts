@@ -1,26 +1,43 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IAuthTokens } from "@/shared/model/authentication";
 
 interface AuthState {
-  tokens: IAuthTokens | null;
+  token:string | null;
+  session_id: string | null;
+  usedToken: string | null
 }
 
+interface AuthTokenPayload {
+   accessToken: string | null;
+   session_id: string | null;
+}
 const initialState: AuthState = {
-  tokens: null,
-};
+  token: localStorage.getItem('accessToken'),
+  session_id: localStorage.getItem('session_id'),
+  usedToken: localStorage.getItem("usedToken")
+}
 
 const authSlice = createSlice({
-  name: "auth",
+  name:"auth",
   initialState,
-  reducers: {
-    setTokens(state, action: PayloadAction<IAuthTokens>) {
-      state.tokens = action.payload;
-    },
-    clearTokens(state) {
-      state.tokens = null;
-    },
-  },
-});
-
-export const { setTokens, clearTokens } = authSlice.actions;
+  reducers:{
+     authTokenChange: (state, action: PayloadAction<AuthTokenPayload>)=> {
+        localStorage.setItem('accessToken', action.payload.accessToken || '')
+        localStorage.setItem('session_id', action.payload.session_id || '')
+        state.token = action.payload.accessToken;
+        state.session_id = action.payload.session_id;
+        state.usedToken = action.payload.accessToken;
+     },
+     logoutUser: (state) => {
+       localStorage.removeItem('accessToken')
+       localStorage.removeItem('session_id')
+       state.token = null;
+       state.session_id = null;
+       state.usedToken = null;
+     },
+     adjustUsedToken: (state, action) => {
+       state.usedToken = action.payload;
+     }
+  }
+})
+export const {authTokenChange, logoutUser, adjustUsedToken} = authSlice.actions;
 export default authSlice.reducer;

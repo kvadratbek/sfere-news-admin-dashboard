@@ -17,9 +17,10 @@ export const useFeedsList = () => {
     priority: queryPriority,
     lang: selectedLanguage,
   });
-
   const totalItems = data?.count ?? 0;
   const totalPages = Math.ceil(totalItems / (queryLimit ?? 15));
+
+
 
   return {
     feeds: data?.feeds,
