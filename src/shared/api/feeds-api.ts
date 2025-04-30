@@ -1,4 +1,3 @@
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IGetAllFeedsResponse,
   IFeedResponse,
@@ -7,11 +6,8 @@ import {
 } from "@/shared/model/feeds";
 import { IAllFeedItemsResponse } from "@/shared/model/feed-items";
 
-import { IFGetAllFeeds } from "../model/feeds/feed-response-types";
 import { baseApi } from "./base_api";
 
-
-import { baseApi } from "./base-api";
 
 // export const feedsApi = createApi({
 //   reducerPath: "feedsApi",
