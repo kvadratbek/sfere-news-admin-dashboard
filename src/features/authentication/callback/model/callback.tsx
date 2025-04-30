@@ -22,28 +22,26 @@ export const Callback: React.FC = () => {
   });
 
   const [refreshToken] = useRefreshTokenMutation()
-  
+
   useEffect(() => {
-     if(tokens?.session?.id){
-       const fetchRefresh = async () => {
-          try{
-            const refreshedToken = await refreshToken(tokens.session.id).unwrap();
-            localStorage.setItem('access_token', JSON.stringify(refreshedToken.access_token));
-            console.log("Refreshed Token", refreshedToken)
-            dispatch(authTokenChange({
-              accessToken: refreshedToken.access_token,
-              session_id: refreshedToken.session.id
-            }))
-            navigate("/dashboard")
-          }catch(err){
-            console.log("Refresh Token Failed", err)
-          }
-       }
-       fetchRefresh()
-     }
+    if (tokens?.session?.id) {
+      const fetchRefresh = async () => {
+        try {
+          console.log(tokens)
+          dispatch(authTokenChange({
+            accessToken: tokens.access_token,
+            session_id: tokens.session.id
+          }))
+          navigate("/dashboard")
+        } catch (err) {
+          console.log("Refresh Token Failed", err)
+        }
+      }
+      fetchRefresh()
+    }
   }, [tokens, dispatch, navigate, refreshToken]);
 
- 
+
 
   if (isLoading) {
     return <div>Processing login...</div>;
