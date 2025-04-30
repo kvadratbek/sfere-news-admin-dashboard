@@ -17,7 +17,7 @@ type QueryHookType<TData, TArgs = Record<string, unknown>> = (
   isLoading: boolean;
   error?: unknown;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any; // Allow additional properties
+  [key: string]: any;
 };
 
 interface QuerySelectProps<TData, TValue, TArgs = Record<string, unknown>>
@@ -75,16 +75,24 @@ export const QuerySelect = <TData, TValue, TArgs>({
         onValueChange={handleValueChange}
         disabled={isLoading}
       >
-        <SelectTrigger id={elementId} className="w-full text-center">
-          <SelectValue placeholder={getPlaceholderText()} />
+        <SelectTrigger
+          id={elementId}
+          className="w-full inline-flex items-center justify-center text-center h-9 px-4 py-2 border"
+        >
+          <SelectValue
+            className="flex justify-center text-center"
+            placeholder={getPlaceholderText()}
+          />
         </SelectTrigger>
-        <SelectContent className="w-[var(--radix-select-trigger-width)]">
+        <SelectContent>
           {showAllOption && (
             <SelectItem
               value={allOptionValue}
               className="flex items-center justify-between"
             >
-              <span className="pr-6 whitespace-nowrap">{allOptionText}</span>
+              <span className="pr-6 whitespace-nowrap text-center">
+                {allOptionText}
+              </span>
             </SelectItem>
           )}
           {data?.map((item) => (
@@ -93,7 +101,7 @@ export const QuerySelect = <TData, TValue, TArgs>({
               value={getKeyValue(item).toString()}
               className="flex items-center justify-between"
             >
-              <span className="pr-6 whitespace-nowrap">
+              <span className="pr-6 whitespace-nowrap text-center">
                 {getDisplayValue(item)}
               </span>
             </SelectItem>

@@ -1,8 +1,8 @@
-
-interface IFGetAllFeeds {
-  count:number;
-  feeds: IFeedResponse[];
+interface IGetAllFeedsResponse {
+  count: number;
+  feeds: IFeedResponse[]
 }
+
 interface IFeedResponse {
   base_url: string;
   created_at: string;
@@ -23,4 +23,5 @@ interface IFeedTranslation {
   title: string;
 }
 
-export type { IFeedResponse, IFGetAllFeeds };
+
+export type { IGetAllFeedsResponse, IFeedResponse };

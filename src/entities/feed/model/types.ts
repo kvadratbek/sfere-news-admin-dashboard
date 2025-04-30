@@ -1,4 +1,5 @@
 import { IFeedResponse } from "@/shared/model/feeds";
+import { JSX } from "react";
 
 interface IFeedProps {
   feed: IFeedResponse;

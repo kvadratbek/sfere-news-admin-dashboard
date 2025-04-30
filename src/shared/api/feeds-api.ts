@@ -1,11 +1,35 @@
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  IGetAllFeedsResponse,
   IFeedResponse,
   IPostFeed,
   IGetFeedsParams,
 } from "@/shared/model/feeds";
 import { IAllFeedItemsResponse } from "@/shared/model/feed-items";
+
 import { IFGetAllFeeds } from "../model/feeds/feed-response-types";
 import { baseApi } from "./base_api";
+
+
+import { baseApi } from "./base-api";
+
+// export const feedsApi = createApi({
+//   reducerPath: "feedsApi",
+//   baseQuery: fetchBaseQuery({
+//     baseUrl: "https://api1.sfere.pro",
+//     prepareHeaders: (headers) => {
+//       headers.set("Accept", "application/json");
+//       headers.set("Content-Type", "application/json");
+
+//       const apiKey = import.meta.env.VITE_API_KEY;
+//       if (apiKey) {
+//         headers.set("Authorization", `Bearer ${apiKey}`);
+//       }
+
+//       return headers;
+//     },
+//   }),
+//   tagTypes: ["Feed"],
 
 export const feedsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,12 +41,14 @@ export const feedsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Feed"],
     }),
-    getAllFeeds: builder.query<IFGetAllFeeds, IGetFeedsParams>({
+
+    getAllFeeds: builder.query<IGetAllFeedsResponse, IGetFeedsParams>({
+
       query: ({ limit = 10, page = 1, priority = true, lang = "uz" }) => ({
         url: "/v1/admin/feeds/feed/all",
         params: { limit, page, priority, lang },
       }),
-      // transformResponse: (response: { feeds: IFGetAllFeeds[] }) =>
+      // transformResponse: (response: { feeds: IFeedResponse[] }) =>
       //   response.feeds,
       providesTags: ["Feed"],
     }),
@@ -58,6 +84,7 @@ export const feedsApi = baseApi.injectEndpoints({
 export const {
   useCreateFeedMutation,
   useGetAllFeedsQuery,
+  useLazyGetAllFeedsQuery,
   useLazyRefreshFeedItemsByFeedIdQuery,
   useLazyGetFeedByIdQuery,
   useUpdateFeedMutation,

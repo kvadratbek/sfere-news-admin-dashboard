@@ -50,6 +50,14 @@ export const feedItemsApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Feed-Item"],
     }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    getFeedItemContent: builder.query<any, any>({
+      query: ({ item_link }) => ({
+        url: `/v1/admin/feeds/items/content`,
+        params: { item_link },
+      }),
+      providesTags: ["Feed-Item"],
+    }),
     getFeedItemById: builder.query<IFeedItem, number>({
       query: (id) => `/v1/admin/feeds/items/${id}`,
       providesTags: ["Feed-Item"],
@@ -79,6 +87,7 @@ export const {
   useCreateFeedItemMutation,
   useGetAllFeedItemsQuery,
   useGetAllItemsByFeedQuery,
+  useGetFeedItemContentQuery,
   useLazyGetFeedItemByIdQuery,
   useUpdateFeedItemMutation,
   useDeleteFeedItemMutation,

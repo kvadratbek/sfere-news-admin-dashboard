@@ -39,6 +39,8 @@ export const FeedsList = () => {
     totalPages,
   } = useFeedsList();
 
+ 
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
       <div className="flex justify-between items-center mt-4 p-4 rounded-xl bg-muted/50">
@@ -77,19 +79,17 @@ export const FeedsList = () => {
                 />
               ))}
             </TableBody>
-            {totalPages > 0 && (
-              <TableFooter>
-                <TableRow>
-                  <TableCell colSpan={10}>
-                    <AppPagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={setCurrentPage}
-                    />
-                  </TableCell>
-                </TableRow>
-              </TableFooter>
-            )}
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={10}>
+                  <AppPagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         </div>
       )}
