@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useGetTokensQuery, useRefreshTokenQuery } from "@/shared/api/authentication";
+import { useGetTokensQuery, useRefreshTokenMutation } from "@/shared/api/authentication";
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../../auth-slice";
+// import { logoutUser } from "../../auth-slice";
+import { authTokenChange } from "../../auth-slice/model/auth-slice";
 
 
 export const Callback: React.FC = () => {
@@ -20,18 +21,27 @@ export const Callback: React.FC = () => {
     skip: !code,
   });
 
-  const sessionId = tokens?.session.id ?? "";
-  const { data: refreshToken} = useRefreshTokenQuery(sessionId)
-  const access_token = refreshToken?.access_token && localStorage.setItem('accessToken', JSON.stringify(refreshToken?.access_token))
-  console.log(access_token)
+  const [refreshToken] = useRefreshTokenMutation()
   
   useEffect(() => {
-    if (tokens) {
-      dispatch(logoutUser());
-      console.log(tokens);
-      navigate("/dashboard");
-    }
-  }, [tokens, dispatch, navigate]);
+     if(tokens?.session?.id){
+       const fetchRefresh = async () => {
+          try{
+            const refreshedToken = await refreshToken(tokens.session.id).unwrap();
+            localStorage.setItem('access_token', JSON.stringify(refreshedToken.access_token));
+            console.log("Refreshed Token", refreshedToken)
+            dispatch(authTokenChange({
+              accessToken: refreshedToken.access_token,
+              session_id: refreshedToken.session.id
+            }))
+            navigate("/dashboard")
+          }catch(err){
+            console.log("Refresh Token Failed", err)
+          }
+       }
+       fetchRefresh()
+     }
+  }, [tokens, dispatch, navigate, refreshToken]);
 
  
 

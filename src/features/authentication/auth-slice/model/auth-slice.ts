@@ -2,17 +2,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
   token:string | null;
-  refreshToken: string | null;
+  session_id: string | null;
   usedToken: string | null
 }
 
 interface AuthTokenPayload {
    accessToken: string | null;
-   refreshToken: string | null;
+   session_id: string | null;
 }
 const initialState: AuthState = {
   token: localStorage.getItem('accessToken'),
-  refreshToken: localStorage.getItem('refreshToken'),
+  session_id: localStorage.getItem('session_id'),
   usedToken: localStorage.getItem("usedToken")
 }
 
@@ -22,16 +22,16 @@ const authSlice = createSlice({
   reducers:{
      authTokenChange: (state, action: PayloadAction<AuthTokenPayload>)=> {
         localStorage.setItem('accessToken', action.payload.accessToken || '')
-        localStorage.setItem('refreshToken', action.payload.refreshToken || '')
+        localStorage.setItem('session_id', action.payload.session_id || '')
         state.token = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
+        state.session_id = action.payload.session_id;
         state.usedToken = action.payload.accessToken;
      },
      logoutUser: (state) => {
        localStorage.removeItem('accessToken')
-       localStorage.removeItem('refreshToken')
+       localStorage.removeItem('session_id')
        state.token = null;
-       state.refreshToken = null;
+       state.session_id = null;
        state.usedToken = null;
      },
      adjustUsedToken: (state, action) => {

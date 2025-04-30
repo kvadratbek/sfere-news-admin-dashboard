@@ -11,7 +11,7 @@ export const authApi = baseApi.injectEndpoints({
         params: { code },
       }),
     }),
-    refreshToken:builder.query<IAuthRefreshTokenResponse, string>({
+    refreshToken:builder.mutation<IAuthRefreshTokenResponse, string>({
        query: (session_id) => ({
         url:"/v1/auth/oauth/refresh",
         method: "GET",
@@ -21,4 +21,4 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetTokensQuery, useRefreshTokenQuery } = authApi;
+export const { useGetTokensQuery, useRefreshTokenMutation } = authApi;
