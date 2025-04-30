@@ -24,7 +24,7 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.usedToken;
     if (token) {
-      headers.set("authorization", `Bearer ${token}`);
+      headers.set("Authorization", `Bearer ${token}`);
     }
     return headers;
   },
@@ -75,6 +75,7 @@ export const baseQueryWithReauth: BaseQueryFn<
       
       result = await baseQuery(args, api, extraOptions);
     } else {
+      console.error("how ir possible?");
       api.dispatch(logoutUser());
     }
   }
