@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+const initialAccessToken = localStorage.getItem("accessToken")
 interface AuthState {
   accessToken:string | null;
   session_id: string | null;
@@ -11,9 +12,9 @@ interface AuthTokenPayload {
    session_id: string | null;
 }
 const initialState: AuthState = {
-  accessToken: localStorage.getItem('accessToken'),
+  accessToken: initialAccessToken,
   session_id: localStorage.getItem('session_id'),
-  usedToken: localStorage.getItem("usedToken")
+  usedToken: initialAccessToken
 }
 
 const authSlice = createSlice({
