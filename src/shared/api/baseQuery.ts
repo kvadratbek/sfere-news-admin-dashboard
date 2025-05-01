@@ -5,7 +5,7 @@ import {
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query";
 import { RootState } from "@/app/store";
-import { authTokenChange } from "@/features/authentication/auth-slice/model/auth-slice";
+import { authTokenChange, logoutUser } from "@/features/authentication/auth-slice/model/auth-slice";
 
 
 interface RefreshResponse {
@@ -74,10 +74,10 @@ export const baseQueryWithReauth: BaseQueryFn<
       
       result = await baseQuery(args, api, extraOptions);
     }
-    // else {
-    //   console.error("Something went with refresh token", refreshResult.error);
-    //   api.dispatch(logoutUser());
-    // }
+    else {
+      console.error("Something went with refresh token", refreshResult.error);
+      api.dispatch(logoutUser());
+    }
   }
 
   return result;
