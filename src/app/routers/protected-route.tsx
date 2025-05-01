@@ -6,18 +6,18 @@ interface IProtectedRoute {
 }
 
 export const ProtectedRoute: React.FC<IProtectedRoute> = ({ children }) => {
-  const tokens = JSON.parse(localStorage.getItem("accessToken") || "")
-  console.log(`Access Token: ${tokens}`)
+  const tokens = localStorage.getItem("accessToken")
+  console.log(`Hi Iam Token ${tokens}`)
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!tokens || !tokens.access_token) {
+    if (!tokens) {
       console.warn("No valid tokens found, redirecting to login");
       navigate("/");
     }
   }, [tokens, navigate]);
 
-  if (!tokens || !tokens.access_token) {
+  if (!tokens) {
     return null;
   }
 

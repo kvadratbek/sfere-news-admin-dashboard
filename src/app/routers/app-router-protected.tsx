@@ -10,7 +10,7 @@ import {
 } from "@/pages";
 import { Callback } from "@/features/authentication";
 
-export const AppRouter = () => {
+export const AppRouterProtector = () => {
   const routerConfig = createBrowserRouter([
     {
       path: "/",
