@@ -10,7 +10,7 @@ export const feedCategoriesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createCategory: builder.mutation<ICategoryResponse, IPostCategory>({
       query: (category) => ({
-        url: "/v1/admin/feeds/categories",
+        url: "/v1/admin/feeds/categories/",
         method: "POST",
         body: category,
       }),

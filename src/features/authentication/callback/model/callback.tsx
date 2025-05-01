@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetTokensQuery, useRefreshTokenMutation } from "@/shared/api/authentication";
 import { useDispatch } from "react-redux";
-// import { logoutUser } from "../../auth-slice";
 import { authTokenChange } from "../../auth-slice/model/auth-slice";
 
 
