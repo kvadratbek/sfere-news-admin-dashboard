@@ -1,6 +1,4 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 
 interface IProtectedRoute {
@@ -8,7 +6,8 @@ interface IProtectedRoute {
 }
 
 export const ProtectedRoute: React.FC<IProtectedRoute> = ({ children }) => {
-  const tokens = useSelector((state: RootState) => state.auth.tokens);
+  const tokens = JSON.parse(localStorage.getItem("accessToken") || "")
+  console.log(`Access Token: ${tokens}`)
   const navigate = useNavigate();
 
   useEffect(() => {
