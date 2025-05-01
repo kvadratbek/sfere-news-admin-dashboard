@@ -7,7 +7,7 @@ interface IProtectedRoute {
 
 export const ProtectedRoute: React.FC<IProtectedRoute> = ({ children }) => {
   const tokens = localStorage.getItem("accessToken")
-  console.log(`Hi Iam Token ${tokens}`)
+  // console.log(`Hi Iam Token ${tokens}`)
   const navigate = useNavigate();
 
   useEffect(() => {
