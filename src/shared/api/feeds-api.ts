@@ -14,7 +14,7 @@ export const feedsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createFeed: builder.mutation<IFeedResponse, IPostFeed>({
       query: (feed) => ({
-        url: "/v1/admin/feeds/feed/",
+        url: "/v1/admin/feeds/feed",
         method: "POST",
         body: feed,
       }),
