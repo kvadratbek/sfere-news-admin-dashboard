@@ -24,7 +24,6 @@ export const InputBlock = ({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className="col-span-3"
-      required
     />
   </div>
 );
