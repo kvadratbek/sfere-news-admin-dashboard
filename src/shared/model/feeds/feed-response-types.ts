@@ -11,6 +11,7 @@ interface IFeedResponse {
   logo_url_id: string;
   max_items: number;
   priority: number;
+  item_class:string;
   translation: IFeedTranslation[];
   updated_at: string;
 }

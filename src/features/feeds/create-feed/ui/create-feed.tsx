@@ -18,6 +18,7 @@ import { toast } from "sonner";
 export const CreateFeed = () => {
   const [baseUrl, setBaseUrl] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
+  const [itemClass, setItemClass] = useState("")
   const [priority, setPriority] = useState(0);
   const [translations, setTranslations] = useState([
     { lang: "", title: "", description: "" },
@@ -56,11 +57,11 @@ export const CreateFeed = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const feed = {
       base_url: baseUrl,
       logo_url: logoUrl,
       max_items: 0,
+      item_class: itemClass,
       priority: priority,
       translation: translations,
     };
@@ -116,6 +117,19 @@ export const CreateFeed = () => {
                 value={logoUrl}
                 placeholder="https://example.com/logo.png"
                 onChange={(e) => setLogoUrl(e.target.value)}
+                className="col-span-3"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="itemClass" className="text-center">
+                Item Class
+              </Label>
+              <Input
+                id="itemClass"
+                value={itemClass}
+                placeholder="item-class"
+                onChange={(e) => setItemClass(e.target.value)}
                 className="col-span-3"
                 required
               />

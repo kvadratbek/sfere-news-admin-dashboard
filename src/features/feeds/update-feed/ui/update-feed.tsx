@@ -35,6 +35,7 @@ export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
   const [form, setForm] = useState({
     baseUrl: "",
     logoUrl: "",
+    item_class:"",
     priority: 0,
     translations: [emptyTranslation(updateFeedId)],
   });
@@ -54,6 +55,7 @@ export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
       setForm({
         baseUrl: feedData.base_url,
         logoUrl: feedData.logo_url,
+        item_class: feedData.item_class,
         priority: feedData.priority,
         translations: feedData.translation?.length
           ? feedData.translation
@@ -94,6 +96,7 @@ export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
       id: updateFeedId,
       base_url: form.baseUrl,
       logo_url: form.logoUrl,
+      item_class: form.item_class,
       priority: form.priority,
       max_items: 0, // <- confirm this is correct
       translation: form.translations,
@@ -150,6 +153,12 @@ export const UpdateFeed = ({ updateFeedId }: IUpdateFeed) => {
                 label="Logo URL"
                 value={form.logoUrl}
                 onChange={(v) => setForm((f) => ({ ...f, logoUrl: v }))}
+              />
+              <InputBlock
+                id="itemClass"
+                label="Item Class"
+                value={form.item_class}
+                onChange={(v) => setForm((f) => ({ ...f, item_class: v }))}
               />
               <InputBlock
                 id="priority"

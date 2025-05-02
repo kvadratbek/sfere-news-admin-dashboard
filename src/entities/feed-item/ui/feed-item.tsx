@@ -27,10 +27,10 @@ export const FeedItem = ({
           <CollapsibleTrigger asChild>
             <div
               className={cn(
-                "rounded-md py-3 font-mono text-sm cursor-pointer",
+                "rounded-md py-3 font-mono text-sm cursor-pointer !max-w-[120px]",
                 sourceTitle
                   ? "text-wrap whitespace-normal" // Full text when open
-                  : "whitespace-nowrap overflow-hidden overflow-ellipsis" // Truncated when closed
+                  : "whitespace-nowrap overflow-hidden overflow-ellipsis " // Truncated when closed
               )}
             >
               {feedItem.source_title ? (
