@@ -43,21 +43,20 @@ export const Callback: React.FC = () => {
 
 
   if (isLoading) {
-    return <div>Processing login...</div>;
+    return <div className="w-full h-[100vh] flex items-center justify-center">
+      <h1 className="text-xl font-bold">Processing login...</h1>
+    </div>;
   }
 
   if (error) {
     console.error("Token fetch error:", error);
     return (
-      <div>
+      <div className="w-full h-[100vh] flex items-center justify-center flex-col text-center">
         Failed to authenticate.{" "}
         {error && "status" in error
           ? `Error ${error.status}: ${JSON.stringify(error.data)}`
           : "Unknown error occurred"}
-        <button
-          onClick={() => navigate("/")}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-        >
+        <button onClick={() => navigate("/")} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
           Try Again
         </button>
       </div>
@@ -79,5 +78,7 @@ export const Callback: React.FC = () => {
     );
   }
 
-  return <div>Authenticating...</div>;
+  return <div className="w-full flex items-center justify-center h-[100vh]">
+    <h1 className="text-xl font-bold">Authenticating...</h1>
+  </div>;
 };

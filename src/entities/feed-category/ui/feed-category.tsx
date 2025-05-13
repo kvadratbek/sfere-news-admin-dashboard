@@ -2,11 +2,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { TableCell, TableRow } from "@/shared/ui/table";
 import { ICategory } from "../model";
+import { useGetAllCategoriesKeysQuery } from "@/shared/api/feed-categories-keys-api";
+
 
 export const FeedCategory = ({
   category,
   deleteFeature,
   updateFeature,
+  viewKeysFeature
 }: ICategory) => {
   const selectedLanguage = useSelector(
     (state: RootState) => state.language.selectedLanguage
@@ -15,9 +18,14 @@ export const FeedCategory = ({
   const prioritizedTranslation = category.translations.find(
     (t) => t.lang === selectedLanguage
   );
+  console.log(category.id,selectedLanguage)
+  const {data} = useGetAllCategoriesKeysQuery({
+    lang: selectedLanguage,
+    category_id: category.id
+  })
 
-  const baseIconUrl =
-    "https://api1.sfere.pro/v1/admin/feeds/categories/icon?icon_name=";
+  console.log(data)
+  const baseIconUrl ="https://api1.sfere.pro/v1/admin/feeds/categories/icon?icon_name=";
 
   return (
     <TableRow key={category.id}>
@@ -33,7 +41,7 @@ export const FeedCategory = ({
       </TableCell>
       <TableCell>{prioritizedTranslation?.name ?? "No Data"}</TableCell>
       <TableCell className="flex flex-row-reverse gap-5" align="right">
-        {deleteFeature} {updateFeature}
+        {deleteFeature} {updateFeature} {viewKeysFeature}
       </TableCell>
     </TableRow>
   );
