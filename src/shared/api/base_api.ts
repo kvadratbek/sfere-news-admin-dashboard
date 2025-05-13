@@ -6,6 +6,6 @@ export const baseApi = createApi({
     reducerPath: "api",
     baseQuery: baseQueryWithReauth,
       
-    tagTypes:["Category", "FeedContent", "Feed-Item", "Feed"],
+    tagTypes:["Category", "FeedContent", "Feed-Item", "Feed", "CategoriesKeys"],
     endpoints: ()=> ({})
 })

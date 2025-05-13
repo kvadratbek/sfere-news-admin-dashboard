@@ -10,7 +10,7 @@ import { FeedCategory } from "@/entities";
 import { AppPagination } from "@/features";
 import { FeedCategoriesListHeader } from "./table-header";
 import { UpdateFeedCategory } from "@/features/feed-categories-test";
-import { DeleteFeedCategory } from "@/features/feed-categories";
+import { DeleteFeedCategory, FeedCategoriesKeys } from "@/features/feed-categories";
 import { ICategoryResponse } from "@/shared/model/feed-categories";
 
 interface FeedCategoriesTableProps {
@@ -40,6 +40,7 @@ export const FeedCategoriesTable: FC<FeedCategoriesTableProps> = ({
             deleteFeature={
               <DeleteFeedCategory deleteCategoryId={category.id} />
             }
+            viewKeysFeature={<FeedCategoriesKeys category_id={category.id}/> }
           />
         ))}
       </TableBody>

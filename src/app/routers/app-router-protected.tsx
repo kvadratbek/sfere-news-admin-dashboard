@@ -4,6 +4,7 @@ import {
   LoginPage,
   DashboardPage,
   FeedCategoriesPage,
+  FeedCategoriesKeysPage,
   FeedsPage,
   FeedContentsPage,
   FeedItemsPage,
@@ -33,6 +34,14 @@ export const AppRouterProtector = () => {
       element: (
         <ProtectedRoute>
           <FeedCategoriesPage />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/feed-categories/:urlCategoryId",
+      element: (
+        <ProtectedRoute>
+          <FeedCategoriesKeysPage />
         </ProtectedRoute>
       ),
     },

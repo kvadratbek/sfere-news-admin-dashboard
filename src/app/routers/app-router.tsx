@@ -14,6 +14,9 @@ const DashboardPage = lazy(() =>
 const FeedCategoriesPage = lazy(() =>
   import("@/pages/").then((module) => ({ default: module.FeedCategoriesPage }))
 );
+const FeedCategoriesKeysPage = lazy(() =>
+  import("@/pages/").then((module) => ({ default: module.FeedCategoriesKeysPage }))
+);
 const FeedsPage = lazy(() =>
   import("@/pages").then((module) => ({ default: module.FeedsPage }))
 );
@@ -38,7 +41,9 @@ class ErrorBoundary extends Component<{ children: React.ReactNode }> {
 
   render() {
     if (this.state.hasError) {
-      return <div>Something went wrong. Please try again.</div>;
+      return <div className="w-full h-[100vh] flex items-center justify-center">
+        <h1 className="text-xl font-bold">❌Something went wrong. Please try again...</h1>
+      </div>;
     }
     return this.props.children;
   }
@@ -81,6 +86,10 @@ export const AppRouter = () => {
         {
           path: "/feed-categories",
           element: <FeedCategoriesPage />,
+        },
+        {
+          path: "/feed-categories/:urlCategoryId",
+          element: <FeedCategoriesKeysPage />,
         },
         {
           path: "/feeds",

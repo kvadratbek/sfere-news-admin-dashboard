@@ -8,6 +8,7 @@ import {
 } from "@/shared/api";
 import authRedcuer from "@/features/authentication";
 import { languageReducer } from "@/shared/hooks";
+import { feedCategoriesKeysApi } from "@/shared/api/feed-categories-keys-api";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     [feedCategoriesApi.reducerPath]: feedCategoriesApi.reducer,
     [feedContentsApi.reducerPath]: feedContentsApi.reducer,
     [feedItemsApi.reducerPath]: feedItemsApi.reducer,
+    [feedCategoriesKeysApi.reducerPath]: feedCategoriesKeysApi.reducer,
     language: languageReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -33,6 +35,7 @@ export const store = configureStore({
       feedCategoriesApi.middleware,
       feedContentsApi.middleware,
       feedItemsApi.middleware,
+      feedCategoriesKeysApi.middleware,
     ]),
   // Explicitly configure devTools based on environment
   devTools: process.env.NODE_ENV !== "production",

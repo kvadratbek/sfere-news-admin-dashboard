@@ -5,6 +5,7 @@ interface ICategory {
   category: ICategoryResponse;
   updateFeature: React.JSX.Element;
   deleteFeature: React.JSX.Element;
+  viewKeysFeature:React.JSX.Element;
 }
 
 export type { ICategory };
